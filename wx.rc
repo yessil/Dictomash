@@ -20,7 +20,7 @@
     #include "wx/msw/wince/wince.rc"
 #endif
 
-#include "rcdefs.h"
+#include "include/rcdefs.h"
 
 //////////////////////////////////////////////////////////////////////////////
 //
