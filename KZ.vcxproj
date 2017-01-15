@@ -62,7 +62,7 @@
     <ClCompile>
       <AdditionalOptions>/D "_CRTDBG_MAP_ALLOC" /D PSAPI_VERSION=1 %(AdditionalOptions)</AdditionalOptions>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>.\wave2feat;..\wxMSW-2.8.12\include\msvc;..\wxMSW-2.8.12\include;..\sphinxbase\include\win32;..\sphinxbase\include\sphinxbase;..\sphinxbase\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\include;..\wxMSW-2.8.12\include\msvc;..\wxMSW-2.8.12\include;..\sphinxbase\include\win32;..\sphinxbase\include\sphinxbase;..\sphinxbase\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;__WXMSW__;_WINDOWS;NOPCH;_DEBUG;__WXDEBUG__;_UNICODE;UNICODE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -84,7 +84,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
-      <AdditionalIncludeDirectories>.\wave2feat;..\wxMSW-2.8.12\lib\vc_lib\mswu;..\wxMSW-2.8.12\include;..\sphinxbase\include\win32;..\sphinxbase\include\sphinxbase;..\sphinxbase\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\include;..\wxMSW-2.8.12\lib\vc_lib\mswu;..\wxMSW-2.8.12\include;..\sphinxbase\include\win32;..\sphinxbase\include\sphinxbase;..\sphinxbase\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;__WXMSW__;_WINDOWS;NOPCH;_UNICODE;UNICODE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
@@ -113,7 +113,7 @@
     <ClCompile Include="Converter.cpp" />
     <ClCompile Include="Decoder.cpp" />
     <ClCompile Include="ReadAudio.cpp" />
-    <ClCompile Include="wave2feat\sphinx_fe.c" />
+    <ClCompile Include="sphinx_fe.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ASRApp.h" />
@@ -121,14 +121,14 @@
     <ClInclude Include="AudioDialog.h" />
     <ClInclude Include="AudioThread.h" />
     <ClInclude Include="BaseFrame.h" />
-    <ClInclude Include="wave2feat\cmd_ln_defn.h" />
+    <ClInclude Include="cmd_ln_defn.h" />
     <ClInclude Include="Converter.h" />
     <ClInclude Include="Decoder.h" />
     <ClInclude Include="defevent.h" />
     <ClInclude Include="MyTaskbarIcon.h" />
     <ClInclude Include="rcdefs.h" />
     <ClInclude Include="ReadAudio.h" />
-    <ClInclude Include="wave2feat\wave2feat.h" />
+    <ClInclude Include="wave2feat.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="kz.rc" />
