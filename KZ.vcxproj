@@ -116,15 +116,6 @@
     <ClCompile Include="sphinx_fe.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ASRApp.h" />
-    <ClInclude Include="ASRAppFrame.h" />
-    <ClInclude Include="AudioDialog.h" />
-    <ClInclude Include="AudioThread.h" />
-    <ClInclude Include="BaseFrame.h" />
-    <ClInclude Include="cmd_ln_defn.h" />
-    <ClInclude Include="Converter.h" />
-    <ClInclude Include="Decoder.h" />
-    <ClInclude Include="defevent.h" />
     <ClInclude Include="include\ASRApp.h" />
     <ClInclude Include="include\ASRAppFrame.h" />
     <ClInclude Include="include\AudioDialog.h" />
@@ -143,10 +134,6 @@
     <ClInclude Include="include\sndfile.h" />
     <ClInclude Include="include\sphinx_wave2feat.h" />
     <ClInclude Include="include\wave2feat.h" />
-    <ClInclude Include="MyTaskbarIcon.h" />
-    <ClInclude Include="rcdefs.h" />
-    <ClInclude Include="ReadAudio.h" />
-    <ClInclude Include="wave2feat.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="kz.rc" />
