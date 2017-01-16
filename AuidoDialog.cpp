@@ -23,28 +23,28 @@ AudioDialog::AudioDialog(wxWindow* parent, wxWindowID id, const wxString& title,
 	wxGridSizer* gSizer1;
 	gSizer1 = new wxGridSizer( 2 );
 	
-	m_staticText1 = new wxStaticText( this, wxID_ANY, wxT("Ïîðîã òèøèíû"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText1 = new wxStaticText( this, wxID_ANY, wxT("ÐŸÐ¾Ñ€Ð¾Ð³ Ñ‚Ð¸ÑˆÐ¸Ð½Ñ‹"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText1->Wrap( -1 );
 	gSizer1->Add( m_staticText1, 0, wxALL|wxALIGN_RIGHT, 5 );
 	
 	zeroMarginCtl = new wxSpinCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 10, 0 );
 	gSizer1->Add( zeroMarginCtl, 0, wxALL, 5 );
 	
-	m_staticText2 = new wxStaticText( this, wxID_ANY, wxT("Äëèíà ïàóçû"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText2 = new wxStaticText( this, wxID_ANY, wxT("Ð”Ð»Ð¸Ð½Ð° Ð¿Ð°ÑƒÐ·Ñ‹"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText2->Wrap( -1 );
 	gSizer1->Add( m_staticText2, 0, wxALL|wxALIGN_RIGHT, 5 );
 	
 	zeroCutOff = new wxSpinCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 10, 0 );
 	gSizer1->Add( zeroCutOff, 0, wxALL, 5 );
 
-	m_staticText3 = new wxStaticText( this, wxID_ANY, wxT("Äëèíà ðå÷è"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText3 = new wxStaticText( this, wxID_ANY, wxT("Ð”Ð»Ð¸Ð½Ð° Ñ€ÐµÑ‡Ð¸"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText3->Wrap( -1);
 	gSizer1->Add( m_staticText3, 0, wxALL|wxALIGN_RIGHT, 5 );
 	
 	speechMargin = new wxSpinCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 10, 0 );
 	gSizer1->Add( speechMargin, 0, wxALL, 5 );
 
-	m_staticText4 = new wxStaticText( this, wxID_ANY, wxT("Ñåðâåð"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText4 = new wxStaticText( this, wxID_ANY, wxT("Ð¡ÐµÑ€Ð²ÐµÑ€"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText4->Wrap(-1);
 	gSizer1->Add( m_staticText4, 0, wxALL|wxALIGN_RIGHT, 5 );
 
@@ -52,7 +52,7 @@ AudioDialog::AudioDialog(wxWindow* parent, wxWindowID id, const wxString& title,
 	txtServer = new wxTextCtrl( this, wxID_ANY, wxT("localhost"), wxDefaultPosition, wxDefaultSize, 0 );
 	gSizer1->Add( txtServer, 0, wxALL, 5 );
 
-	m_staticText5 = new wxStaticText( this, wxID_ANY, wxT("Ðåæèì îòëàäêè"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText5 = new wxStaticText( this, wxID_ANY, wxT("Ð ÐµÐ¶Ð¸Ð¼ Ð¾Ñ‚Ð»Ð°Ð´ÐºÐ¸"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText5->Wrap(-1);
 	gSizer1->Add( m_staticText5, 0, wxALL|wxALIGN_RIGHT, 5 );
 
