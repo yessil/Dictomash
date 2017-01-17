@@ -111,7 +111,7 @@ bool MyApp::OnInit()
     // created initially)
     frame->Show(true);
 	frame->SetSize(wxSize(800,400));
-	frame->SetIcon(wxICON(sample));
+	frame->SetIcon(wxICON(logo));
 	
     // success: wxApp::OnRun() will be called which will enter the main message
     // loop and the application will run. If we returned false here, the

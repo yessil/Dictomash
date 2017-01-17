@@ -19,7 +19,7 @@
 //aaaaaaaa ICON "kz.ico"
 
 // this icon is used with wxFrame::SetIcon()
-//sample ICON "kz.ico"
+logo	ICON "images/kz.ico"
 mic_on	ICON "images/mic_on.ico"
 mic_off	ICON "images/mic_off.ico"
 
