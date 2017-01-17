@@ -122,7 +122,8 @@ void AudioThread::StartStream(){
 
 	if (in_ad == 0)
 		if ((in_ad = ad_open_sps(SAMPLE_RATE)) == NULL) {
-			frame->WriteText(_T("Failed to open audio input device\n"));
+			frame->WriteText(_T("Не подключен микрофон :(\n"));
+			Sleep(3000);
 			return;
 		}
 	//	if (!in_ad->recording)

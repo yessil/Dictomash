@@ -177,7 +177,7 @@ wxString GetLastLine(){
 	wxString s;
 
 	if (wxFile::Exists(DECODEDTEXT)){
-		f.Open(TEMPFILE);
+		f.Open(DECODEDTEXT);
 		if (f.GetLineCount()>0){
 			s = f.GetLastLine();
 			s.Replace(_("Result:"), _(""));
