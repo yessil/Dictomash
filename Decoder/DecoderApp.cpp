@@ -75,6 +75,7 @@ bool DecoderApp::OnInit()
 	SetVendorName(_T("IZET"));
 	int l = m_locale.GetLanguage();
 	wxString s = m_locale.GetLanguageName(l);
+
 	m_locale.Init(wxLANGUAGE_UNKNOWN, wxLOCALE_CONV_ENCODING);
 	if (decode()<0){
 		wxMessageBox(_T("Ошибка сервера"), _T("Сообщения системы"), wxOK | wxICON_ERROR, NULL);
