@@ -179,8 +179,7 @@ wxString GetLastLine(){
 	if (wxFile::Exists(DECODEDTEXT)){
 		f.Open(DECODEDTEXT);
 		if (f.GetLineCount()>0){
-			s = f.GetLastLine();
-			s.Replace(_("Result:"), _(""));
+			s = f.GetLastLine().BeforeLast('(');
 			s.Trim().Append(_T(" "));
 		} else {
 			s = _T("SIL");
