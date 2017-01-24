@@ -141,48 +141,7 @@ void AudioThread::StopStream()
     ad_close(in_ad);
 }
 
-void AudioThread::SaveToFile(uint32 num_frames, int16* frames){
 
-/*
-	SF_INFO      info;
-
-	info.samplerate = (unsigned int)(SAMPLE_RATE + 0.5);
-	info.frames = num_frames;
-	info.channels = NUM_CHANNELS;
-	info.format = SF_FORMAT_WAV | SF_FORMAT_PCM_16;
-	info.sections = 1;
-	info.seekable = 0;
-
-	if (debug)
-		frame->SetStatusbarText(wxString::Format(_T("zc: %d / nzc: %d "), zc, nzc));
-	if ( zc > silence && nzc > speech){
-
-		wxString wfile = wxString::Format(_T("wav\\recorded%03d.wav"), fileNum);
-
-		if (sf == NULL){
-			sf = sf_open((char*)wfile.char_str(), SFM_WRITE, &info);
-			frame->SetStatusbarText(wfile);
-		}
-
-		if( !sf )
-		{
-			err = -1;
-		}
-		else
-		{
-			sf_count_t n = sf_writef_short(sf, (short *)frames, (sf_count_t)num_frames);
-			err = sf_close(sf);
-		}
-		if (zc > sil_cutoff){
-			sf = NULL;
-			fileNum++;
-		}
-		zc = 0;
-		nzc = 0;
-
-	}
-*/
-}
 
 void AudioThread::ResetFiles(){
 
@@ -204,8 +163,6 @@ void AudioThread::Stop(){
 void AudioThread::ToggleRecord(){
 
 	recordIt = ! recordIt;
-	if (recordIt)
-		noiseLevelCounter = 0;
 }
 
 void AudioThread::Record2(){
@@ -282,9 +239,9 @@ void AudioThread::Record(){
 	uint32 num_frames;
 	char fname[FILENAME_LENGHT];
 	char newname[FILENAME_LENGHT];
-	double cut;
-	static double sumNoiseLevel = 0;
-	static double noiseLevel = 1000; // = 1/ noiseLevel actually
+	double noiseLevel;
+	static int pauseLenght = 0;
+	static double noiseThreshold = 1000; // = 1/ noiseThreshold actually
 	static int m = 0;
 
 	static bool speechDetected = false;
@@ -308,21 +265,28 @@ void AudioThread::Record(){
 			}
 		}
 
-		cut = double(nzc * 1.0) / double((zc *1.0));
-		//if (noiseLevelCounter <= MAX_NOISE_LEVEL_COUNT){
-		//	sumNoiseLevel += cut;
-		//	if (noiseLevelCounter++ == MAX_NOISE_LEVEL_COUNT){
-		//		noiseLevel = sumNoiseLevel / MAX_NOISE_LEVEL_COUNT;
+		noiseLevel = double(nzc * 1.0) / double((zc *1.0));
+		//if (noiseThresholdCounter <= MAX_NOISE_LEVEL_COUNT){
+		//	sumnoiseThreshold += noiseLevel;
+		//	if (noiseThresholdCounter++ == MAX_NOISE_LEVEL_COUNT){
+		//		noiseThreshold = sumnoiseThreshold / MAX_NOISE_LEVEL_COUNT;
 		//	}
 		//	return;
 		//}
-		noiseLevel = sil_cutoff  *1e-3;
+		noiseThreshold = speech *1e-3;// sil_noiseLeveloff  *1e-3;
 		if (debug)
-			frame->SetStatusbarText(wxString::Format(_T("cut: %5.3f noise: %5.3f"), cut, noiseLevel));
-
-		if (cut < noiseLevel && !speechDetected){
-			return;
+			frame->SetStatusbarText(wxString::Format(_T("noiseLevel: %5.3f noise: %5.3f"), noiseLevel, noiseThreshold));
+		if (noiseLevel < noiseThreshold ){
+			if (!speechDetected)
+				return;
+			else 
+				pauseLenght++;
 		}
+		else {
+			pauseLenght = 0;
+		}
+
+
 		speechDetected = true;
 
 		if (fwrite(frames, sizeof(int16), num_frames, dump) < num_frames) {
@@ -336,17 +300,18 @@ void AudioThread::Record(){
 		}
 
 		if (debug)
-				frame->SetStatusbarText(wxString::Format(_T("cut: %5.3f noise: %5.3f"), cut, noiseLevel));
+				frame->SetStatusbarText(wxString::Format(_T("noiseLevel: %5.3f noise: %5.3f"), noiseLevel, noiseThreshold));
 
-		if (cut < noiseLevel *.5){ //close  current dump file and open the new one
+		if (pauseLenght > sil_cutoff){ //close  current dump file and open the new one
 			if (debug)
-				frame->SetStatusbarText(wxString::Format(_T("cut: %5f.3 !"), cut));
+				frame->SetStatusbarText(wxString::Format(_T("noiseLevel: %5f.3 !"), noiseLevel));
 
 			fclose(dump);
 			dump = NULL;
 			strcpy(newname, fname);
 			rename(fname, strcat(newname, ".raw"));
 			sprintf(fname, "wav\\recorded%03d", ++fileNum);
+			pauseLenght = 0;
 			speechDetected = false;
 		}
     }
@@ -355,30 +320,7 @@ void AudioThread::Record(){
 		debug = debug;
 	}
 }
-/*
- void AudioThread::RawToWav(char* raw){
- 
-	SF_INFO      info;
-	//info.format = SF_FORMAT_PCM_16;
-	SNDFILE *sf, *sfw;
-	int16 buf[4096];
-	
-	memset (&info, 0, sizeof (info)) ;
-	wxString wfile = wxString::FromAscii(raw);
-	wfile.Append(_T(".wav"));
 
-	sf = sf_open(raw, SFM_READ, &info);
-	//const char *s = sf_strerror (NULL);
-	info.format = SF_FORMAT_WAV;
-	sfw = sf_open((char*)wfile.char_str(), SFM_WRITE, &info);
-	while(sf_read_short(sf, (short *)buf, 4096)> 0){
-		sf_write_short(sfw, (short *)buf, 4096);
-	}
-	sf_close(sf);
-	sf_close(sfw);
-
-}
-*/
  int AudioThread::getTimer(){ return timeout; }
  void AudioThread::ResetTimer(){ 
 
