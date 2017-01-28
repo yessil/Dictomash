@@ -30,16 +30,12 @@ typedef struct {
 #define SAMPLE_RATE  (16000)
 #define FRAMES_PER_BUFFER (32768)//(32768)
 #define NUM_CHANNELS    (1)
-#define ZERO_MARGIN_KEY	_T("/Audio/ZERO_MARGIN")
-#define	SILENCE_CUTOFF_KEY _T("/Audio/SILENCE_CUTOFF")
-#define	SPEECH_LENGTH_KEY _T("/Audio/SPEECH_LENGTH")
+#define NOISE_THRESHOLD_KEY	_T("/Audio/NOISE_LEVEL")
+#define	MAX_PAUSE_LENGTH_KEY _T("/Audio/MAX_PAUSE_LENGTH")
+#define	SIGNAL_LEVEL_KEY _T("/Audio/SIGNAL_LEVEL")
 #define	SERVER_KEY _T("/Setup/server")
 #define TIMEOUT 1000
 #define MAX_NOISE_LEVEL_COUNT 40
-static int zc = 0;
-static int nzc = 0;
-static int silence, speech, sil_cutoff;
-static bool debug = false;
 struct ad_rec_s {
 	HWAVEIN h_wavein;	/* "HANDLE" to the audio input device */
 	ad_wbuf_t *wi_buf;	/* Recording buffers provided to system */
@@ -75,7 +71,10 @@ public:
 
 private:
     ad_rec_t			*in_ad;
-    int                 timeout;
+	int noiseThreshold, maxPauseLength;
+	double signalLevel;
+	bool debug = false;
+	int                 timeout;
 	int16 frames[FRAMES_PER_BUFFER];
 	BaseFrame*			frame;
 	Converter			cnv;

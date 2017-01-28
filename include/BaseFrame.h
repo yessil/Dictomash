@@ -18,9 +18,9 @@ public:
 	~BaseFrame(void);
 	bool stop;
 	virtual bool IsStop();
-	int ZERO_MARGIN;
-	int SILENCE_CUTOFF;
-	int SPEECH_LENGTH;
+	int NOISE_THRESHOLD;
+	int MAX_PAUSE_LENGTH;
+	int SIGNAL_LEVEL;
 	wxString SERVER;
 	int PORT;
 	bool debug;

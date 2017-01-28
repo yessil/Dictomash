@@ -28,7 +28,6 @@ AudioThread::AudioThread(BaseFrame *f){
 	in_ad = 0;
 	dump = NULL;
 	fileNum = 0;
-	nzc = 0;
 	timeout = 0;
 }
 
@@ -73,11 +72,6 @@ void AudioThread::WriteText(const wxString& text, int errNum){
 int AudioThread::Initialize(){
 
 
-	silence = frame->ZERO_MARGIN; // Порог тишины
-	sil_cutoff = frame->SILENCE_CUTOFF; // Длина паузы
-	speech = frame->SPEECH_LENGTH; // Длина речи
-	zc = 0;
-	nzc = 0;
 	ResetFiles();
 	fileNum = 0;
 	timeout = 0;
@@ -90,9 +84,9 @@ void *AudioThread::Entry(){
 	while(!TestDestroy()){
 		Sleep(10);
 		timeout++;
-		silence = frame->ZERO_MARGIN;
-		sil_cutoff = frame->SILENCE_CUTOFF;
-		speech = frame->SPEECH_LENGTH;
+		noiseThreshold = frame->NOISE_THRESHOLD; // Порог тишины
+		maxPauseLength = frame->MAX_PAUSE_LENGTH; // Длина паузы
+		signalLevel = frame->SIGNAL_LEVEL *1E-3; // Длина речи
 		debug = frame->debug;
 
 
@@ -165,42 +159,6 @@ void AudioThread::ToggleRecord(){
 	recordIt = ! recordIt;
 }
 
-void AudioThread::Record2(){
-
-		uint32 num_frames;
-		char fname[20];
-		static int m = 0;
-
-		//if (!in_ad->recording)
-			ad_start_rec(in_ad);
-
-		sprintf(fname, "wav\\recorded");
-		if (dump == NULL)
-			if ((dump = fopen(fname, "wb")) == 0) {
-				E_ERROR("Cannot open dump file %s\n", fname);
-				return;
-			}
-
-		for(int i=0; i<FRAMES_PER_BUFFER; i++)
-			frames[i]=0;
-		num_frames = ad_read(in_ad, frames, FRAMES_PER_BUFFER);
-		zc=0;
-		for (int i=0; i<num_frames; i++){
-			if (abs(frames[i])< silence){
-				zc++;
-			}
-		}
-/*		if (zc == num_frames){
-			return;
-		}*/
-		if (m++ == 2){
-			SetValue((abs(frames[0])+abs(frames[1])+abs(frames[2])) / 3); // level indicator on status panel
-			m =0;
-		}
-		if (fwrite(frames, sizeof(int16), num_frames, dump) < num_frames) {
-			E_ERROR("Error writing audio to dump file.\n");
-		}
-}
 
 void AudioThread::SaveFile(){
 
@@ -239,9 +197,10 @@ void AudioThread::Record(){
 	uint32 num_frames;
 	char fname[FILENAME_LENGHT];
 	char newname[FILENAME_LENGHT];
-	double noiseLevel;
+	int zc, nzc;
+
+	double noiseLevel = 0;
 	static int pauseLenght = 0;
-	static double noiseThreshold = 1000; // = 1/ noiseThreshold actually
 	static int m = 0;
 
 	static bool speechDetected = false;
@@ -257,7 +216,7 @@ void AudioThread::Record(){
 
 		zc = nzc = 1;
 		for (int i = 0; i<num_frames; i++){
-			if (abs(frames[i])< silence){
+			if (abs(frames[i])< noiseThreshold){
 				zc++;
 			}
 			else {
@@ -266,17 +225,9 @@ void AudioThread::Record(){
 		}
 
 		noiseLevel = double(nzc * 1.0) / double((zc *1.0));
-		//if (noiseThresholdCounter <= MAX_NOISE_LEVEL_COUNT){
-		//	sumnoiseThreshold += noiseLevel;
-		//	if (noiseThresholdCounter++ == MAX_NOISE_LEVEL_COUNT){
-		//		noiseThreshold = sumnoiseThreshold / MAX_NOISE_LEVEL_COUNT;
-		//	}
-		//	return;
-		//}
-		noiseThreshold = speech *1e-3;// sil_noiseLeveloff  *1e-3;
 		if (debug)
 			frame->SetStatusbarText(wxString::Format(_T("noiseLevel: %5.3f noise: %5.3f"), noiseLevel, noiseThreshold));
-		if (noiseLevel < noiseThreshold ){
+		if (noiseLevel < signalLevel ){
 			if (!speechDetected)
 				return;
 			else 
@@ -300,9 +251,9 @@ void AudioThread::Record(){
 		}
 
 		if (debug)
-				frame->SetStatusbarText(wxString::Format(_T("noiseLevel: %5.3f noise: %5.3f"), noiseLevel, noiseThreshold));
+				frame->SetStatusbarText(wxString::Format(_T("noiseLevel: %5.3f noise: %5.3f"), noiseLevel, signalLevel));
 
-		if (pauseLenght > sil_cutoff){ //close  current dump file and open the new one
+		if (pauseLenght > maxPauseLength){ //close  current dump file and open the new one
 			if (debug)
 				frame->SetStatusbarText(wxString::Format(_T("noiseLevel: %5f.3 !"), noiseLevel));
 

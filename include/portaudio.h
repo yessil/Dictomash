@@ -621,7 +621,7 @@ typedef unsigned long PaStreamFlags;
 #define   paNeverDropInput  ((PaStreamFlags) 0x00000004)
 
 /** Call the stream callback to fill initial output buffers, rather than the
- default behavior of priming the buffers with zeros (silence). This flag has
+ default behavior of priming the buffers with zeros (noiseLevel). This flag has
  no effect for input-only and blocking read/write streams.
  
  @see PaStreamFlags
@@ -652,7 +652,7 @@ typedef struct PaStreamCallbackTimeInfo{
 typedef unsigned long PaStreamCallbackFlags;
 
 /** In a stream opened with paFramesPerBufferUnspecified, indicates that
- input data is all silence (zeros) because no real data is available. In a
+ input data is all noiseLevel (zeros) because no real data is available. In a
  stream opened without paFramesPerBufferUnspecified, it indicates that one or
  more zero samples have been inserted into the input buffer to compensate
  for an input underflow.

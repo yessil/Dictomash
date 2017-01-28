@@ -19,7 +19,7 @@ public:
 
 private:
 
-	wxSpinCtrl *zeroMarginCtl;
+	wxSpinCtrl *thresholdCtl;
 	wxSpinCtrl *zeroCutOff;
 	wxSpinCtrl *speechMargin;
 	wxCheckBox *debugChk;
