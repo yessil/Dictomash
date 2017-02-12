@@ -60,11 +60,6 @@ void DecoderThread::WriteText(const wxString& text, int errNum){
 
 int DecoderThread::Initialize(){
 
-	//if (sock->IsDisconnected()){
-	//	sock->Connect(addr, true);
-	//	//while ( !sock->WaitOnConnect(-1, 0) );
-	//}
-
 	return 0;
 }
 

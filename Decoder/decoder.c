@@ -71,6 +71,8 @@
 #include "kb.h"
 #include "corpus.h"
 #include "srch_output.h"
+#include "srch.h"
+#include "bio.h"
 #include "filename.h" 
 #include "cmdln_macro.h"
 #include "wx/socket.h"
@@ -247,7 +249,96 @@ int ReceiveFile( wxSocketBase *sock){
 }
 
 int
-process_utt(char *uttfile, void (*func) (void *kb, utt_res_t * ur, int32 sf, int32 ef, char *uttid), void *kb, int port, int timeout)
+utt_decode2(void *data, utt_res_t * ur, int32 sf, int32 ef, char *uttid)
+{
+	kb_t *kb;
+	kbcore_t *kbcore;
+	cmd_ln_t *config;
+	int32 num_decode_frame;
+	int32 total_frame;
+	stat_t *st;
+	srch_t *s;
+	int res = 0;
+
+	num_decode_frame = 0;
+	E_INFO("Processing: %s\n", uttid);
+
+	kb = (kb_t *)data;
+	kbcore = kb->kbcore;
+	config = kbcore_config(kbcore);
+	kb_set_uttid(uttid, ur->uttfile, kb);
+	st = kb->stat;
+
+	/* Convert input file to cepstra if waveform input is selected */
+	if (cmd_ln_boolean_r(config, "-adcin")) {
+		int16 *adcdata;
+		size_t nsamps = 0;
+
+		if ((adcdata = bio_read_wavfile(cmd_ln_str_r(config, "-cepdir"),
+			ur->uttfile,
+			cmd_ln_str_r(config, "-cepext"),
+			cmd_ln_int32_r(config, "-adchdr"),
+			strcmp(cmd_ln_str_r(config, "-input_endian"), "big"),
+			&nsamps)) == NULL) {
+			res = -1;
+			E_ERROR("Cannot read file %s\n", ur->uttfile);
+		}
+		if (kb->mfcc) {
+			ckd_free_2d((void **)kb->mfcc);
+		}
+		fe_start_utt(kb->fe);
+		if (fe_process_utt(kb->fe, adcdata, nsamps, &kb->mfcc, &total_frame) < 0) {
+			res = -1;
+			E_ERROR("MFCC calculation failed\n", ur->uttfile);
+		}
+		ckd_free(adcdata);
+		if (total_frame > S3_MAX_FRAMES) {
+			res = -1;
+			E_ERROR("Maximum number of frames (%d) exceeded\n", S3_MAX_FRAMES);
+		}
+		if ((total_frame = feat_s2mfc2feat_live(kbcore_fcb(kbcore),
+			kb->mfcc,
+			&total_frame,
+			TRUE, TRUE,
+			kb->feat)) < 0) {
+			res = -1;
+			E_ERROR("Feature computation failed\n");
+		}
+	}
+	else {
+		/* Read mfc file and build feature vectors for entire utterance */
+		if ((total_frame = feat_s2mfc2feat(kbcore_fcb(kbcore), ur->uttfile,
+			cmd_ln_str_r(config, "-cepdir"),
+			cmd_ln_str_r(config, "-cepext"), sf, ef,
+			kb->feat, S3_MAX_FRAMES)) < 0) {
+			res = -1;
+			E_ERROR("Cannot read file %s. Forced exit\n", ur->uttfile);
+		}
+	}
+
+	/* Also need to make sure we don't set resource if it is the same. Well, this mechanism
+	could be provided inside the following function.
+	*/
+	s = (srch_t*)kb->srch;
+	if (ur->lmname != NULL)
+		srch_set_lm(s, ur->lmname);
+	if (ur->regmatname != NULL)
+		kb_setmllr(ur->regmatname, ur->cb2mllrname, kb);
+	/* These are necessary! */
+	s->uttid = kb->uttid;
+	s->uttfile = kb->uttfile;
+
+	utt_begin(kb);
+	utt_decode_block(kb->feat, total_frame, &num_decode_frame, kb);
+	utt_end(kb);
+
+	st->tot_fr += st->nfr;
+	return res;
+}
+
+
+int
+process_utt(char *uttfile, int (*func) (void *kb, utt_res_t * ur, int32 sf, int32 ef, char *uttid), void *kb, int port, int timeout)
 {
     char uttid[4096];
     char base[16384];
@@ -296,7 +387,8 @@ process_utt(char *uttfile, void (*func) (void *kb, utt_res_t * ur, int32 sf, int
 
 			if (func) {
 				utt_res_set_uttfile(ur, uttfile);
-				(*func) (kb, ur, 0, -1, uttid);
+				if ((*func) (kb, ur, 0, -1, uttid) <0)
+					continue;
 			}
 
 			ptmr_stop(&tm);
@@ -388,7 +480,7 @@ doDecode(char** argv)
 
 	//checkdict();
 	//testsock();
-	res = process_utt((char*)cmd_ln_str_r(config,"-utt"), utt_decode, &kb, port, timeout);
+	res = process_utt((char*)cmd_ln_str_r(config,"-utt"), utt_decode2, &kb, port, timeout);
 
 	if (kb.matchsegfp)
 		fclose(kb.matchsegfp);

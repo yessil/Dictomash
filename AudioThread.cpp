@@ -86,7 +86,7 @@ void *AudioThread::Entry(){
 		timeout++;
 		noiseThreshold = frame->NOISE_THRESHOLD; // Порог тишины
 		maxPauseLength = frame->MAX_PAUSE_LENGTH; // Длина паузы
-		signalLevel = frame->SIGNAL_LEVEL *1E-3; // Длина речи
+		signalLevel = frame->SIGNAL_LEVEL *1E-3; // Условный порог речи
 		debug = frame->debug;
 
 
@@ -212,7 +212,10 @@ void AudioThread::Record(){
 		ad_start_rec(in_ad);
 	
 	num_frames = ad_read(in_ad, frames, FRAMES_PER_BUFFER);
-    if (num_frames > 0) {
+	if (debug)
+		frame->SetStatusbarText(wxString::Format(_T("num_frames: %d noiseLevel: %5.3f signalLevel: %5.3f"), num_frames, noiseLevel, signalLevel));
+
+	if (num_frames > 0) {
 
 		zc = nzc = 1;
 		for (int i = 0; i<num_frames; i++){
@@ -226,8 +229,8 @@ void AudioThread::Record(){
 
 		noiseLevel = double(nzc * 1.0) / double((zc *1.0));
 		if (debug)
-			frame->SetStatusbarText(wxString::Format(_T("noiseLevel: %5.3f noise: %5.3f"), noiseLevel, noiseThreshold));
-		if (noiseLevel < signalLevel ){
+			frame->SetStatusbarText(wxString::Format(_T("num_frames: %d noiseLevel: %5.3f signalLevel: %5.3f"), num_frames, noiseLevel, signalLevel));
+		if (noiseLevel < signalLevel){
 			if (!speechDetected)
 				return;
 			else 
@@ -236,7 +239,6 @@ void AudioThread::Record(){
 		else {
 			pauseLenght = 0;
 		}
-
 
 		speechDetected = true;
 
@@ -251,11 +253,9 @@ void AudioThread::Record(){
 		}
 
 		if (debug)
-				frame->SetStatusbarText(wxString::Format(_T("noiseLevel: %5.3f noise: %5.3f"), noiseLevel, signalLevel));
+			frame->SetStatusbarText(wxString::Format(_T("num_frames: %d noiseLevel: %5.3f signalLevel: %5.3f"), num_frames, noiseLevel, signalLevel));
 
 		if (pauseLenght > maxPauseLength){ //close  current dump file and open the new one
-			if (debug)
-				frame->SetStatusbarText(wxString::Format(_T("noiseLevel: %5f.3 !"), noiseLevel));
 
 			fclose(dump);
 			dump = NULL;

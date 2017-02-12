@@ -7,7 +7,7 @@
     #include "wx/wx.h"
 #endif
 #include "wx/intl.h"
-#include "DecoderFrame.h"
+//#include "DecoderFrame.h"
 // ----------------------------------------------------------------------------
 // private classes
 // ----------------------------------------------------------------------------
