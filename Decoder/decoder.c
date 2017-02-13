@@ -425,13 +425,7 @@ int decode(){
 
 	int res = 0;
 	char* argv[] = {"dummy.exe", "etc/decode.cfg"};
-	res = 0;
-	long aa = S3_MAX_FRAMES;
-
-	while (res==0){
-		res = doDecode(argv);
-	}
-	return 0;
+	return doDecode(argv);
 }
 
 

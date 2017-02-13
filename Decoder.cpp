@@ -114,7 +114,6 @@ void DecoderThread::ProcessQueue(){
 	wxArrayString files;
 	wxDir::GetAllFiles(_T("wav"), &files, _T("*.raw"));
 	int n = files.Count();
-	int newts;
 
 	if (n>0)
 		wxCopyFile(files[n-1], _("wav\\lastfile.rw"), true);

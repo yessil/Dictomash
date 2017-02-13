@@ -100,7 +100,6 @@ bool DecoderApp::OnExceptionInMainLoop()
         throw;
     }
 
-    return true;
 }
 
 void DecoderApp::OnUnhandledException()
