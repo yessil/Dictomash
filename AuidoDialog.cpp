@@ -49,7 +49,9 @@ AudioDialog::AudioDialog(wxWindow* parent, wxWindowID id, const wxString& title,
 	gSizer1->Add( m_staticText4, 0, wxALL|wxALIGN_RIGHT, 5 );
 
 
-	txtServer = new wxTextCtrl( this, wxID_ANY, wxT("localhost"), wxDefaultPosition, wxDefaultSize, 0 );
+	wxSize sz(wxDefaultSize);
+	sz.IncBy(118, 0);
+	txtServer = new wxTextCtrl(this, wxID_ANY, wxT("localhost"), wxDefaultPosition, sz, 0);
 	gSizer1->Add( txtServer, 0, wxALL, 5 );
 
 	m_staticText5 = new wxStaticText( this, wxID_ANY, _("Debug mode"), wxDefaultPosition, wxDefaultSize, 0 );
