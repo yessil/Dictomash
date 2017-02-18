@@ -1,4 +1,4 @@
-
+ï»¿
 // For compilers that support precompilation, includes "wx/wx.h".
 #include "wx/wxprec.h"
 // for all others, include the necessary headers (this file is usually all you
@@ -78,9 +78,9 @@ bool DecoderApp::OnInit()
 
 	m_locale.Init(wxLANGUAGE_UNKNOWN, wxLOCALE_CONV_ENCODING);
 	if (decode()<0){
-		wxMessageBox(_T("Îøèáêà ñåðâåðà"), _T("Ñîîáùåíèÿ ñèñòåìû"), wxOK | wxICON_ERROR, NULL);
+		wxMessageBox(_T("ÐžÑˆÐ¸Ð±ÐºÐ° ÑÐµÑ€Ð²ÐµÑ€Ð°"), _T("Ð¡Ð¾Ð¾Ð±Ñ‰ÐµÐ½Ð¸Ñ ÑÐ¸ÑÑ‚ÐµÐ¼Ñ‹"), wxOK | wxICON_ERROR, NULL);
 	} else
-		wxMessageBox(_T("Ðàáîòà çàâåðøåíà"), _T("Ñîîáùåíèÿ ñèñòåìû"), wxOK | wxICON_INFORMATION, NULL);
+		wxMessageBox(_T("Ð Ð°Ð±Ð¾Ñ‚Ð° Ð·Ð°Ð²ÐµÑ€ÑˆÐµÐ½Ð°"), _T("Ð¡Ð¾Ð¾Ð±Ñ‰ÐµÐ½Ð¸Ñ ÑÐ¸ÑÑ‚ÐµÐ¼Ñ‹"), wxOK | wxICON_INFORMATION, NULL);
 
 	return false;
  //   return true;
@@ -110,15 +110,15 @@ void DecoderApp::OnUnhandledException()
     }
     catch ( ... )
     {
-        wxMessageBox(_T("Ïîìîãèòå !!! Óìèðàþ !!!"),
-                     _T("Ñìåðòåëüíàÿ îøèáêà"), wxOK | wxICON_ERROR);
+        wxMessageBox(_T("ÐŸÐ¾Ð¼Ð¾Ð³Ð¸Ñ‚Ðµ !!! Ð£Ð¼Ð¸Ñ€Ð°ÑŽ !!!"),
+                     _T("Ð¡Ð¼ÐµÑ€Ñ‚ÐµÐ»ÑŒÐ½Ð°Ñ Ð¾ÑˆÐ¸Ð±ÐºÐ°"), wxOK | wxICON_ERROR);
     }
 }
 
 void DecoderApp::OnFatalException()
 {
-    wxMessageBox(_T("Ïåíàëüòè !!"),
-                 _T("Êðàñíàÿ êàðòî÷êà"), wxOK | wxICON_ERROR);
+    wxMessageBox(_T("ÐŸÐµÐ½Ð°Ð»ÑŒÑ‚Ð¸ !!"),
+                 _T("ÐšÑ€Ð°ÑÐ½Ð°Ñ ÐºÐ°Ñ€Ñ‚Ð¾Ñ‡ÐºÐ°"), wxOK | wxICON_ERROR);
 	if (::wxFileExists(_("semafor")))
 		::wxRemoveFile(_("semafor"));
 	exit(-1);
