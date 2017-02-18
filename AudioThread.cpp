@@ -116,14 +116,14 @@ void AudioThread::StartStream(){
 
 	if (in_ad == 0)
 		if ((in_ad = ad_open_sps(SAMPLE_RATE)) == NULL) {
-			frame->WriteText(_("Не подключен микрофон :(\n"));
+			frame->WriteText(_("Microphone disconnected :(\n"));
 			Sleep(3000);
 			return;
 		}
 	//	if (!in_ad->recording)
 			ad_start_rec(in_ad);
 
-	frame->SetStatusbarText(_("Начало записи..."));
+	frame->SetStatusbarText(_("Start recording..."));
 
 }
 

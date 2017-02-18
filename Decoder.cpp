@@ -197,7 +197,7 @@ int DecoderThread::SndMsg(const char* msg, int len){
 //		if (debug)
 //			WriteText(wxString::Format(_("Sent: len: %d\n"), len));
 	} else 
-		WriteText(_("<< Не подключен ! >>\n"));
+		WriteText(_("Not connected !\n"));
 	return res;
 }
 
