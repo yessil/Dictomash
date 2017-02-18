@@ -23,28 +23,28 @@ AudioDialog::AudioDialog(wxWindow* parent, wxWindowID id, const wxString& title,
 	wxGridSizer* gSizer1;
 	gSizer1 = new wxGridSizer( 2 );
 	
-	m_staticText1 = new wxStaticText( this, wxID_ANY, _("Порог тишины"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText1 = new wxStaticText( this, wxID_ANY, _("Noise threshold"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText1->Wrap( -1 );
 	gSizer1->Add( m_staticText1, 0, wxALL|wxALIGN_RIGHT, 5 );
 	
 	thresholdCtl = new wxSpinCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 10, 0 );
 	gSizer1->Add( thresholdCtl, 0, wxALL, 5 );
 	
-	m_staticText2 = new wxStaticText( this, wxID_ANY, _("Длина паузы"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText2 = new wxStaticText( this, wxID_ANY, _("Pause length"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText2->Wrap( -1 );
 	gSizer1->Add( m_staticText2, 0, wxALL|wxALIGN_RIGHT, 5 );
 	
 	zeroCutOff = new wxSpinCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 10, 0 );
 	gSizer1->Add( zeroCutOff, 0, wxALL, 5 );
 
-	m_staticText3 = new wxStaticText( this, wxID_ANY, _("Уровень сигнала"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText3 = new wxStaticText( this, wxID_ANY, _("Speech detection level"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText3->Wrap( -1);
 	gSizer1->Add( m_staticText3, 0, wxALL|wxALIGN_RIGHT, 5 );
 	
 	speechMargin = new wxSpinCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 10, 0 );
 	gSizer1->Add( speechMargin, 0, wxALL, 5 );
 
-	m_staticText4 = new wxStaticText( this, wxID_ANY, _("Сервер"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText4 = new wxStaticText( this, wxID_ANY, _("Server"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText4->Wrap(-1);
 	gSizer1->Add( m_staticText4, 0, wxALL|wxALIGN_RIGHT, 5 );
 
@@ -52,7 +52,7 @@ AudioDialog::AudioDialog(wxWindow* parent, wxWindowID id, const wxString& title,
 	txtServer = new wxTextCtrl( this, wxID_ANY, wxT("localhost"), wxDefaultPosition, wxDefaultSize, 0 );
 	gSizer1->Add( txtServer, 0, wxALL, 5 );
 
-	m_staticText5 = new wxStaticText( this, wxID_ANY, _("Режим отладки"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText5 = new wxStaticText( this, wxID_ANY, _("Debug mode"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText5->Wrap(-1);
 	gSizer1->Add( m_staticText5, 0, wxALL|wxALIGN_RIGHT, 5 );
 
