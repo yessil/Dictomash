@@ -139,6 +139,10 @@
   <ItemGroup>
     <ResourceCompile Include="kz.rc" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="kk\Dictomash.mo" />
+    <None Include="kk\Dictomash.po" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

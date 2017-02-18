@@ -38,7 +38,7 @@ MyFrame1::MyFrame1( wxWindow* parent, wxWindowID id, const wxString& title, cons
 	m_cursor = new wxCursor(wxCURSOR_WAIT);
 	wxBoxSizer* bSizer1;
 	bSizer1 = new wxBoxSizer( wxVERTICAL );
-	wxLocale::AddCatalogLookupPathPrefix(wxT("."));
+	wxLocale::AddCatalogLookupPathPrefix(wxT("./lang"));
 	bool check =
 	m_locale.Init(wxLANGUAGE_KAZAKH, wxLOCALE_CONV_ENCODING);
 	check = m_locale.AddCatalog(wxT("Dictomash"));
@@ -165,9 +165,9 @@ void MyFrame1::OnSendKeyStroke(wxCommandEvent& event){
 void MyFrame1::OnAbout(wxCommandEvent& WXUNUSED(event))
 {
     wxMessageBox(wxString::Format(
-		_("Developed by: Yessil Khassenov, Astana\nOperating system is %s."),
-                    _("Версия 2.0"),
-                    wxGetOsDescription().c_str()
+		_("Developed by: Yessil Khassenov, Astana\nVersion: %s\nOperating system is %s."),
+                    _("2.0"),
+					wxGetOsDescription().c_str()
                  ),
                  _("Brief info"),
                  wxOK | wxICON_INFORMATION,
