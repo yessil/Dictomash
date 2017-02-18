@@ -1,4 +1,4 @@
-#include "BaseFrame.h"
+﻿#include "BaseFrame.h"
 
 BaseFrame::BaseFrame(void)
 {

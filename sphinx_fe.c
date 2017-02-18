@@ -1,4 +1,4 @@
-/* -*- c-basic-offset: 4; indent-tabs-mode: nil -*- */
+﻿/* -*- c-basic-offset: 4; indent-tabs-mode: nil -*- */
 /* ====================================================================
  * Copyright (c) 1996-2004 Carnegie Mellon University.  All rights 
  * reserved.

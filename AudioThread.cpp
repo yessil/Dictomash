@@ -1,4 +1,4 @@
-#ifndef AUDIOTHREAD_H
+п»ї#ifndef AUDIOTHREAD_H
 #include "AudioThread.h"
 #endif
 //#include "sndfile.h"
@@ -64,7 +64,7 @@ void AudioThread::SetValue(int value){
 void AudioThread::WriteText(const wxString& text, int errNum){
 
 	wxString tmp = text;
-	tmp.Printf(_T("\nError: %d - %s"), errNum);
+	tmp.Printf(_("\nError: %d - %s"), errNum);
 	WriteText(tmp);
 	err = 0; // reset error
 }
@@ -84,9 +84,9 @@ void *AudioThread::Entry(){
 	while(!TestDestroy()){
 		Sleep(10);
 		timeout++;
-		noiseThreshold = frame->NOISE_THRESHOLD; // Порог тишины
-		maxPauseLength = frame->MAX_PAUSE_LENGTH; // Длина паузы
-		signalLevel = frame->SIGNAL_LEVEL *1E-3; // Условный порог речи
+		noiseThreshold = frame->NOISE_THRESHOLD; // РџРѕСЂРѕРі С‚РёС€РёРЅС‹
+		maxPauseLength = frame->MAX_PAUSE_LENGTH; // Р”Р»РёРЅР° РїР°СѓР·С‹
+		signalLevel = frame->SIGNAL_LEVEL *1E-3; // РЈСЃР»РѕРІРЅС‹Р№ РїРѕСЂРѕРі СЂРµС‡Рё
 		debug = frame->debug;
 
 
@@ -116,14 +116,14 @@ void AudioThread::StartStream(){
 
 	if (in_ad == 0)
 		if ((in_ad = ad_open_sps(SAMPLE_RATE)) == NULL) {
-			frame->WriteText(_T("Не подключен микрофон :(\n"));
+			frame->WriteText(_("РќРµ РїРѕРґРєР»СЋС‡РµРЅ РјРёРєСЂРѕС„РѕРЅ :(\n"));
 			Sleep(3000);
 			return;
 		}
 	//	if (!in_ad->recording)
 			ad_start_rec(in_ad);
 
-	frame->SetStatusbarText(_T("Начало записи..."));
+	frame->SetStatusbarText(_("РќР°С‡Р°Р»Рѕ Р·Р°РїРёСЃРё..."));
 
 }
 

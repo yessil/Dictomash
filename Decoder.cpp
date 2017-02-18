@@ -1,4 +1,4 @@
-#include "Decoder.h"
+п»ї#include "Decoder.h"
 #include "BaseFrame.h"
 #include "wx/dir.h"
 #include "wx/textfile.h"
@@ -54,7 +54,7 @@ void DecoderThread::WriteText(const wxString& text){
 void DecoderThread::WriteText(const wxString& text, int errNum){
 
  	wxString tmp = text;
-	tmp.Printf(_T("\nError: %d - %s"), errNum);
+	tmp.Printf(_("\nError: %d - %s"), errNum);
 	WriteText(tmp);
 }
 
@@ -100,12 +100,12 @@ void DecoderThread::ProcessQueue(){
 
 	if (stop){
 		int rr= SndMsg("0");
-		WriteText(_("\nОстановлен\n"));
+		WriteText(_("\nStopped\n"));
 		return;
 	}
 	if (restart){
 		SndMsg("0");
-		WriteText(_("\nРестарт\n"));
+		WriteText(_("\nRestart\n"));
 		restart = false;
 		isReady = true;
 		return;
@@ -116,12 +116,12 @@ void DecoderThread::ProcessQueue(){
 	int n = files.Count();
 
 	if (n>0)
-		wxCopyFile(files[n-1], _("wav\\lastfile.rw"), true);
+		wxCopyFile(files[n-1], _T("wav\\lastfile.rw"), true);
 
 	for (int i=0; i < n; i++){
 		wxThread::Sleep(100);
 		if (cnv.Convert(files[i]) < 0){
-			wxLogMessage(_("Проблема в Convert()"));
+			wxLogMessage(_("Problem in Convert()"));
 			return;
 		}
 		
@@ -149,7 +149,7 @@ void DecoderThread::ProcessQueue(){
 			StopTimer();
 
 		} catch ( ... ){
-			wxLogMessage(_("Проблема в GetResult()"));
+			wxLogMessage(_("Problem in GetResult()"));
 		}
 	}
 	//for (int i =0; i < files->Count(); i++)
@@ -197,7 +197,7 @@ int DecoderThread::SndMsg(const char* msg, int len){
 //		if (debug)
 //			WriteText(wxString::Format(_("Sent: len: %d\n"), len));
 	} else 
-		WriteText(_("<< Не подключен ! >>\n"));
+		WriteText(_("<< РќРµ РїРѕРґРєР»СЋС‡РµРЅ ! >>\n"));
 	return res;
 }
 
@@ -224,7 +224,7 @@ void DecoderThread::GetResult(){
 	}
 
 	if (!sock->IsConnected()){
-		WriteText(_("<< Не подключен ! >>\n"));
+		WriteText(_("Not connected !\n"));
 		return;
 	}
 	if (debug)
@@ -238,11 +238,11 @@ void DecoderThread::GetResult(){
 			s.Empty();
 			s.Append( frame->SERVER.Lower()== _("localhost") ?  (const wxChar*)buf : wxString::FromUTF8(buf));
 			s.Replace(_T("<UNK>"), _T(" "), true);
-			s.Replace(_T(" В "), _T(""), true); // TODO
+			s.Replace(_T(" Р’ "), _T(""), true); // TODO
 			eventNewText.SetString(s);
 			wxPostEvent(frame, eventNewText);
 		} else {
-			WriteText(_("<< Ошибка приема ! >>\n"));
+			WriteText(_("Failed to receive the file !\n"));
 		}
 		if (len<BUFLEN)
 			break;
@@ -274,7 +274,7 @@ void DecoderThread::GetResult(){
 		wxPostEvent(frame, eventNewText);
 
 	} else {
-		WriteText(_("<< Не подключен ! >>\n"));
+		WriteText(_("<< РќРµ РїРѕРґРєР»СЋС‡РµРЅ ! >>\n"));
 	}
 }
 #endif
@@ -290,7 +290,7 @@ bool DecoderThread::SendFile(wxString file){
 		stop = stop;
 	wxFileInputStream fi(file);// = new wxFileInputStream
 	if (!fi.IsOk()){
-	//	WriteText(_(" Ошибка чтения файла\n"));
+	//	WriteText(_(" РћС€РёР±РєР° С‡С‚РµРЅРёСЏ С„Р°Р№Р»Р°\n"));
 		return false;
 	}
 	if (debug)
@@ -301,7 +301,7 @@ bool DecoderThread::SendFile(wxString file){
 //		if (debug)
 //			WriteText(wxString::Format(_T("%d\n"), len));
 		if (SndMsg(buf, len) != len){
-			WriteText(_(" Ошибка передачи файла\n"));
+			WriteText(_("Failed to send the file\n"));
 			return false;
 		}
 	}

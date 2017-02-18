@@ -1,4 +1,4 @@
-#ifndef READAUDIOTHREAD_H
+п»ї#ifndef READAUDIOTHREAD_H
 #include "ReadAudio.h"
 #endif
 //#include "sndfile.h"
@@ -82,7 +82,7 @@ void ReadAudio::ReadFile(){
 	}
 	if( ferror(gAudata.fid)) {
 		err = paBadStreamPtr;
-		WriteText(_T("\nНе могу открыть файл ") + fileName);
+		WriteText(_T("\nРќРµ РјРѕРіСѓ РѕС‚РєСЂС‹С‚СЊ С„Р°Р№Р» ") + fileName);
 		return;
 	} 
 
