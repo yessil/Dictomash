@@ -1,0 +1,300 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2017-02-18 22:09+0600\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: ru\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.8.11\n"
+"X-Poedit-Basepath: .\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+
+#: ASRAppFrame.cpp:44
+msgid "Dictomash"
+msgstr "Диктомаш"
+
+#: ASRAppFrame.cpp:65
+msgid "&Help\tF1"
+msgstr "&Помощь\tF1"
+
+#: ASRAppFrame.cpp:65
+msgid "Instructions"
+msgstr "Инструкции"
+
+#: ASRAppFrame.cpp:66
+msgid "&About program..."
+msgstr "&О программе..."
+
+#: ASRAppFrame.cpp:66
+msgid "Brief description"
+msgstr "Краткое описание"
+
+#: ASRAppFrame.cpp:68
+msgid "Process file\tF2"
+msgstr "Обработать файл\tF2"
+
+#: ASRAppFrame.cpp:68
+msgid "Process file"
+msgstr "Обработать файл"
+
+#: ASRAppFrame.cpp:69
+msgid "Font\tAlt-F"
+msgstr "Шрифт\tAlt-F"
+
+#: ASRAppFrame.cpp:69 ASRAppFrame.cpp:155
+msgid "Font"
+msgstr "Шрифт"
+
+#: ASRAppFrame.cpp:71
+msgid "Listen\tF6"
+msgstr "Прослушать\tF6"
+
+#: ASRAppFrame.cpp:71
+msgid "Listen to last phrase"
+msgstr "Прослушать последнюю фразу"
+
+#: ASRAppFrame.cpp:72
+msgid "Record\tF7"
+msgstr "Запись\tF7"
+
+#: ASRAppFrame.cpp:72
+msgid "Record"
+msgstr "Запись"
+
+#: ASRAppFrame.cpp:74
+msgid "Parameters\tF9"
+msgstr "Параметры\tF9"
+
+#: ASRAppFrame.cpp:74
+msgid "Audio parameters"
+msgstr "Аудио параметры"
+
+#: ASRAppFrame.cpp:75
+msgid "Clear\tF10"
+msgstr "Очистить\tF10"
+
+#: ASRAppFrame.cpp:75
+msgid "Clear the screen"
+msgstr "Очистить экран"
+
+#: ASRAppFrame.cpp:76
+msgid "H&ide\tAlt-X"
+msgstr "Скр&ыть\tAlt-X"
+
+#: ASRAppFrame.cpp:76
+msgid "Hide the screen"
+msgstr "Скрыть экран"
+
+#: ASRAppFrame.cpp:77
+msgid "Stop the server\tF12"
+msgstr "Остановить сервер\tF12"
+
+#: ASRAppFrame.cpp:77
+msgid "Stop the server"
+msgstr "Остановить сервер"
+
+#: ASRAppFrame.cpp:78
+msgid "Output to any active app"
+msgstr "Вывод в окно активного приложения"
+
+#: ASRAppFrame.cpp:82
+msgid "&Actions"
+msgstr "&Действия"
+
+#: ASRAppFrame.cpp:83
+msgid "&Help"
+msgstr "&Помощь"
+
+#: ASRAppFrame.cpp:100
+msgid ".\\Dictomash.log"
+msgstr ""
+
+#: ASRAppFrame.cpp:100
+msgid "a"
+msgstr ""
+
+#: ASRAppFrame.cpp:110
+msgid "Could not set icon."
+msgstr "Иконка не доступна"
+
+#: ASRAppFrame.cpp:141
+msgid "Exec"
+msgstr "Выполнить"
+
+#: ASRAppFrame.cpp:141 ASRAppFrame.cpp:281
+msgid "Error"
+msgstr "Ошибка"
+
+#: ASRAppFrame.cpp:168
+#, c-format
+msgid ""
+"Developed by: Yessil Khassenov, Astana\n"
+"Operating system is %s."
+msgstr ""
+"Разработчик: Хасенов Е.А., Астана\n"
+"Операционная система: %s"
+
+#: ASRAppFrame.cpp:169
+msgid "Version 2.0"
+msgstr "Версия 2.0"
+
+#: ASRAppFrame.cpp:172
+msgid "Brief info"
+msgstr "Краткая информация"
+
+#: ASRAppFrame.cpp:330 ASRAppFrame.cpp:332
+msgid "Microphone is on"
+msgstr "Микрофон включен"
+
+#: ASRAppFrame.cpp:335 ASRAppFrame.cpp:336
+msgid "Microphone is off"
+msgstr "Микрофон выключен"
+
+#: ASRAppFrame.cpp:354
+msgid "Parameters"
+msgstr "Параметры"
+
+#: ASRAppFrame.cpp:448
+msgid "Wait..."
+msgstr "Подождите ..."
+
+#: ASRAppFrame.cpp:473
+msgid "Choose the audio file"
+msgstr "Выбери аудиофайл"
+
+#: ASRAppFrame.cpp:597
+msgid "Failed to launch the server !"
+msgstr "Неудачная попытка запустить сервер !"
+
+#: ASRAppFrame.cpp:668
+msgid "Recording level: "
+msgstr "Уровень записи:"
+
+#: ASRAppFrame.cpp:732
+#, c-format
+msgid "  %d sec."
+msgstr "%d сек."
+
+# =====================
+#: AudioThread.cpp:67 Decoder.cpp:57
+#, c-format
+msgid ""
+"\n"
+"Error: %d - %s"
+msgstr ""
+"\n"
+"Ошибка: %d - %s"
+
+#: AudioThread.cpp:119
+msgid "Microphone disconnected :(\n"
+msgstr "Микрофон отключен :(\n"
+
+#: AudioThread.cpp:126
+msgid "Start recording..."
+msgstr "Начало записи …"
+
+#: AudioThread.cpp:189
+#, c-format
+msgid "Cannot open dump file %s\n"
+msgstr "Не могу открыть файл %s\n"
+
+#: AudioThread.cpp:246
+msgid "Error writing audio to dump file.\n"
+msgstr "Ошибка при сохранении аудио файла\n"
+
+#: AuidoDialog.cpp:26
+msgid "Noise threshold"
+msgstr "Порол тишины"
+
+#: AuidoDialog.cpp:33
+msgid "Pause length"
+msgstr "Длина паузы"
+
+#: AuidoDialog.cpp:40
+msgid "Speech detection level"
+msgstr "Уровень речевого сигнала"
+
+#: AuidoDialog.cpp:47
+msgid "Server"
+msgstr "Сервер"
+
+#: AuidoDialog.cpp:55
+msgid "Debug mode"
+msgstr "Режим отладки"
+
+#: Decoder.cpp:103
+msgid ""
+"\n"
+"Stopped\n"
+msgstr ""
+"\n"
+"Остановлен\n"
+
+#: Decoder.cpp:108
+msgid ""
+"\n"
+"Restart\n"
+msgstr ""
+"\n"
+"Рестарт\n"
+
+#: Decoder.cpp:124
+msgid "Problem in Convert()"
+msgstr "Проблема в Convert()"
+
+#: Decoder.cpp:152
+msgid "Problem in GetResult()"
+msgstr "Проблема в GetResult()"
+
+#: Decoder.cpp:196
+#, c-format
+msgid "Error! len: %d <> res: %d\n"
+msgstr "Ошибка ! len: %d <> res: %d\n"
+
+#: Decoder.cpp:200 Decoder.cpp:227
+msgid "Not connected !\n"
+msgstr "Не подключен !\n"
+
+#: Decoder.cpp:231
+msgid ""
+"\n"
+"Getting result"
+msgstr ""
+"\n"
+"Прием результата"
+
+#: Decoder.cpp:236
+#, c-format
+msgid "Read: %5d bytes"
+msgstr "Прочитано %5d байт"
+
+#: Decoder.cpp:245
+msgid "Failed to receive the file !\n"
+msgstr "Ошибка приема файла !\n"
+
+#: Decoder.cpp:262
+msgid "Waiting for result\n"
+msgstr "Ожидание результата\n"
+
+#: Decoder.cpp:266
+#, c-format
+msgid "Receiving length: %d \n"
+msgstr "Принятая длина: %d \n"
+
+#: Decoder.cpp:297
+msgid ""
+"\n"
+"Sending file"
+msgstr ""
+"\n"
+"Отправка файла"
+
+#: Decoder.cpp:304
+msgid "Failed to send the file\n"
+msgstr "Ошибка отправки файла\n"
