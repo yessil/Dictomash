@@ -163,7 +163,7 @@ static arg_t arg[] = {
 #define DECODEDTEXT _T("decoded.txt")
 #define TEMPFILE _T("temp.txt")
 #define BUFLEN 500
-
+#define CMD_STOP 2
 
 
 void delay(){
@@ -242,7 +242,7 @@ int ReceiveFile( wxSocketBase *sock){
 	if (len>0){
 		fo.Write(buf, len);
 		if (buf[0]=='0' && len ==1)
-			res = -2;
+			res = CMD_STOP;
 	}
 	fo.Close();
 	return res;
@@ -392,20 +392,17 @@ process_utt(char *uttfile, int (*func) (void *kb, utt_res_t * ur, int32 sf, int3
 			}
 
 			ptmr_stop(&tm);
-
-			E_INFO
-				("%s: %6.1f sec CPU, %6.1f sec Clk;  TOT: %8.1f sec CPU, %8.1f sec Clk\n\n",
-				 uttid, tm.t_cpu, tm.t_elapsed, tm.t_tot_cpu, tm.t_tot_elapsed);
-
+			E_INFO("%s: %6.1f sec CPU, %6.1f sec Clk;  TOT: %8.1f sec CPU, %8.1f sec Clk\n\n", uttid, tm.t_cpu, tm.t_elapsed, tm.t_tot_cpu, tm.t_tot_elapsed);
 			ptmr_reset(&tm);
+			E_INFO("Sending results back\n");
+			s = GetLastLine();
+			int l = s.Len()*sizeof(wxChar)+2;
+			sock->WriteMsg(s, l);
+
 		} else 
-			if (res==-2)
+			if (res==CMD_STOP)
 				break;
 
-		E_INFO("Sending results back\n"); 
-		s = GetLastLine();
-		int l = s.Len()*sizeof(wxChar)+2;
-		sock->WriteMsg(s, l);
 	}
 	E_INFO("That's all folks !\n");
     if (ur)
@@ -478,8 +475,8 @@ doDecode(char** argv)
 
 	if (kb.matchsegfp)
 		fclose(kb.matchsegfp);
-	if (kb.matchfp)
-		fclose(kb.matchfp);
+	//if (kb.matchfp)
+		//fclose(kb.matchfp);
 	if (kb.kbcore != NULL){
 		kb_free(&kb);
 	}

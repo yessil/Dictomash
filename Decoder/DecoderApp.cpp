@@ -70,9 +70,9 @@ bool DecoderApp::OnInit()
     if ( !wxApp::OnInit() )
         return false;
 
-	wxHandleFatalExceptions(true);
+	wxHandleFatalExceptions(false);
 
-	SetVendorName(_T("IZET"));
+	SetVendorName(_T("Dictomash"));
 	int l = m_locale.GetLanguage();
 	wxString s = m_locale.GetLanguageName(l);
 

@@ -4,6 +4,9 @@
 #include "ASRAppFrame.h"
 #include "wx/textfile.h"
 #include "defevent.h"
+#define _CRTDBG_MAP_ALLOC  
+#include <stdlib.h>  
+#include <crtdbg.h> 
 
 // for all others, include the necessary headers (this file is usually all you
 // need because it includes almost all "standard" wxWidgets headers)
@@ -104,6 +107,10 @@ bool MyApp::OnInit()
 {
     // call the base class initialization method, currently it only parses a
     // few common command-line options but it could be do more in the future
+	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+	_CrtSetBreakAlloc(9554);
+	_CrtSetBreakAlloc(9553);
+	_CrtSetBreakAlloc(9552);
     if ( !wxApp::OnInit() )
         return false;
 	SetVendorName(PROGRAM_TITLE);
