@@ -46,7 +46,7 @@ Converter::~Converter(void)
 {
 }
 
-extern "C" int convert(int32 argc, char **argv);
+extern "C" int convert(int argc, char **argv);
 #if !wxUSE_EXCEPTIONS
     #error "This sample only works with wxUSE_EXCEPTIONS == 1"
 #endif // !wxUSE_EXCEPTIONS

@@ -19,7 +19,7 @@
 
 ///////////////////////////////////////////////////////////////////////////
 
-MyFrame1::MyFrame1( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : BaseFrame( parent, id, title, pos, size, style )
+MyFrame1::MyFrame1(wxLocale& locale, wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style) : BaseFrame(locale, parent, id, title, pos, size, style)
 {
 	m_listCtrl = NULL;
 	decoder = NULL;
@@ -38,10 +38,6 @@ MyFrame1::MyFrame1( wxWindow* parent, wxWindowID id, const wxString& title, cons
 	m_cursor = new wxCursor(wxCURSOR_WAIT);
 	wxBoxSizer* bSizer1;
 	bSizer1 = new wxBoxSizer( wxVERTICAL );
-	wxLocale::AddCatalogLookupPathPrefix(wxT("./lang"));
-	bool check =
-	m_locale.Init(wxLANGUAGE_KAZAKH, wxLOCALE_CONV_ENCODING);
-	check = m_locale.AddCatalog(wxT("Dictomash"));
 	wxBoxSizer* bSizer2;
 	bSizer2 = new wxBoxSizer( wxVERTICAL );
 	m_panel1 = new wxPanel( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
@@ -574,15 +570,14 @@ void MyFrame1::CheckDecoderSrv(){
 
 	DWORD p[500];
 	//char path[_MAX_PATH];
-	DWORD np;
+	DWORD np =1000; //some guess
 	HANDLE h;
 	WCHAR fname[300];
  	wxString filename;
 	int found = 1; // not found
 	long res;
-
-	EnumProcesses(p, 500, &np); 
-	for (int i =0; i < 500; i++){
+	EnumProcesses(p, np, &np); 
+	for (int i =0; i < np; i++){
 		h = OpenProcess(PROCESS_ALL_ACCESS, FALSE, p[i]);
 		GetProcessImageFileName(h, fname, 100);
 		filename.Printf(_T("%s"), fname);

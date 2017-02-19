@@ -34,8 +34,11 @@ DecoderThread::DecoderThread(BaseFrame *f){
 
 DecoderThread::~DecoderThread(void)
 {
-		sock->Close();
-		sock->Destroy();
+	if (sock->IsConnected()){
+		sock->InterruptWait();
+		sock->Shutdown();
+	}
+
 }
 
 bool DecoderThread::IsReady(){ return isReady; }
@@ -67,9 +70,6 @@ void *DecoderThread::Entry(){
 
 	while(!TestDestroy()){
 		Sleep(10);
-		if (stop){
-			return NULL;
-		}
 		debug = frame->debug;
 		if (isReady)
 			ProcessQueue();
@@ -158,9 +158,7 @@ void DecoderThread::ProcessQueue(){
 }
 
 void DecoderThread::Stop(){
-
-	sock->InterruptWait();
-	sock->Close();
+	
 	stop = true;
 }
 bool DecoderThread::Stopped(){
@@ -182,20 +180,15 @@ void DecoderThread::Start(){
 
 int DecoderThread::SndMsg(const char* msg, int len){
 
-	if (stop)
-		Exit();
 
 	int res = 0;
 	if (sock->IsDisconnected()){
 		sock->Connect(addr, true);
-		//sock->WaitOnConnect(60, 0);
 	}
 	if (sock->IsConnected()){
 		res = sock->WriteMsg((void*)msg, len).LastCount(); 
 		if (res!=len)
 			WriteText(wxString::Format(_("Error! len: %d <> res: %d\n"), len, res));
-//		if (debug)
-//			WriteText(wxString::Format(_("Sent: len: %d\n"), len));
 	} else 
 		WriteText(_("Not connected !\n"));
 	return res;

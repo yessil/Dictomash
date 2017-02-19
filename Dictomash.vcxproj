@@ -131,10 +131,8 @@
     <ClInclude Include="include\rcdefs.h" />
     <ClInclude Include="include\ReadAudio.h" />
     <ClInclude Include="include\resource.h" />
-    <ClInclude Include="include\SampleFormat.h" />
     <ClInclude Include="include\sndfile.h" />
     <ClInclude Include="include\sphinx_wave2feat.h" />
-    <ClInclude Include="include\wave2feat.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="kz.rc" />

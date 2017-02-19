@@ -1,5 +1,5 @@
 #pragma once
-#include "wave2feat.h"
+//#include "wave2feat.h"
 #include "wx/string.h"
 class Converter
 {

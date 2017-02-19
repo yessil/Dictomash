@@ -1,14 +1,8 @@
 ﻿#include "BaseFrame.h"
 
-BaseFrame::BaseFrame(void)
-{
-}
 
-BaseFrame::~BaseFrame(void)
-{
-}
 
-BaseFrame::BaseFrame( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxFrame( parent, id, title, pos, size, style )
+BaseFrame::BaseFrame(wxLocale& locale, wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style) : wxFrame(parent, id, title, pos, size, style), m_locale(locale)
 {
 //	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
 	stop = false;

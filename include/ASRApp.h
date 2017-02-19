@@ -36,6 +36,9 @@ public:
     virtual bool OnInit();
 	virtual int OnExit();
     virtual void OnUnhandledException();
+protected:
+	wxLocale m_locale; // locale we'll be using
+
 
 };
 
@@ -103,9 +106,14 @@ bool MyApp::OnInit()
     // few common command-line options but it could be do more in the future
     if ( !wxApp::OnInit() )
         return false;
-	SetVendorName(_T("IZET"));
+	SetVendorName(PROGRAM_TITLE);
+
+	wxLocale::AddCatalogLookupPathPrefix(wxT("./lang"));
+	bool check = m_locale.Init(wxLANGUAGE_KAZAKH, wxLOCALE_CONV_ENCODING);
+	check = m_locale.AddCatalog(wxT("Dictomash"));
+
     // create the main application window
-	MyFrame1 *frame = new MyFrame1( NULL, -1, PROGRAM_TITLE, wxDefaultPosition, wxSize( 500,300 ), wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
+	MyFrame1 *frame = new MyFrame1(m_locale, NULL, -1, PROGRAM_TITLE, wxDefaultPosition, wxSize(500, 300), wxDEFAULT_FRAME_STYLE | wxTAB_TRAVERSAL);
 	//wxFrame *frame = new wxFrame(NULL, -1, _T("Супер распознавалка"), wxDefaultPosition, wxSize( 500,300 ), wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
     // and show it (the frames, unlike simple controls, are not shown when
     // created initially)
@@ -191,8 +199,8 @@ void MyTaskBarIcon::OnMenuMicOff(wxCommandEvent&)
 {
     //wxIcon icon(smile_xpm);
 
-    if (!SetIcon(wxICON( mic_off), wxT("Микрофон выключен")))
-        wxMessageBox(wxT("Could not set new icon."));
+    if (!SetIcon(wxICON( mic_off), _("Microphone is off")))
+        wxMessageBox(_("Could not set new icon."));
 	if (isMicOn)
 		isMicOn = pframe->Record();
 
@@ -208,8 +216,8 @@ void MyTaskBarIcon::OnMenuMicOn(wxCommandEvent&)
     //{
     //    wxMessageBox(wxT("wxTaskBarIcon Sample - icon already is the old version"));
     //}
-    if (!SetIcon(wxICON( mic_on), wxT("Микрофон включен")))
-        wxMessageBox(wxT("Could not set new icon."));
+    if (!SetIcon(wxICON( mic_on), _("Microphone is on")))
+        wxMessageBox(_("Could not set new icon."));
 	isMicOn = pframe->Record();
 }
 
