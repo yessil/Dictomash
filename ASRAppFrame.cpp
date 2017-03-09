@@ -28,58 +28,58 @@ MyFrame1::MyFrame1(wxLocale& locale, wxWindow* parent, wxWindowID id, const wxSt
 	m_cursor = NULL;
 	pConfig = NULL;
 	stop = false;
-	NOISE_THRESHOLD  = 700;
+	NOISE_THRESHOLD = 700;
 	MAX_PAUSE_LENGTH = 10;
 	SIGNAL_LEVEL = 2000;
 	SERVER = _T("alphabet.kz");
 	PORT = 3000;
 	debug = false;
-	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
+	this->SetSizeHints(wxDefaultSize, wxDefaultSize);
 	m_cursor = new wxCursor(wxCURSOR_WAIT);
 	wxBoxSizer* bSizer1;
-	bSizer1 = new wxBoxSizer( wxVERTICAL );
+	bSizer1 = new wxBoxSizer(wxVERTICAL);
 	wxBoxSizer* bSizer2;
-	bSizer2 = new wxBoxSizer( wxVERTICAL );
-	m_panel1 = new wxPanel( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
-	m_textbox = new wxRichTextCtrl(m_panel1, RICHTEXT_CTRL, wxEmptyString, wxPoint(210,0), wxSize(200, 200), wxVSCROLL|wxHSCROLL|wxNO_BORDER|wxWANTS_CHARS);
-	bSizer2->Add( m_textbox, 1, wxEXPAND | wxALL, 5 );
-	m_panel1->SetSizer( bSizer2 );
+	bSizer2 = new wxBoxSizer(wxVERTICAL);
+	m_panel1 = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
+	m_textbox = new wxRichTextCtrl(m_panel1, RICHTEXT_CTRL, wxEmptyString, wxPoint(210, 0), wxSize(200, 200), wxVSCROLL | wxHSCROLL | wxNO_BORDER | wxWANTS_CHARS);
+	bSizer2->Add(m_textbox, 1, wxEXPAND | wxALL, 5);
+	m_panel1->SetSizer(bSizer2);
 	m_panel1->Layout();
-	bSizer2->Fit( m_panel1 );
-	wxFont font(24, wxROMAN, wxNORMAL, wxNORMAL, false, wxT("Times New Roman"), wxFONTENCODING_CP1251);
- 	m_textbox->SetFont(font);
+	bSizer2->Fit(m_panel1);
+	wxFont font(20, wxROMAN, wxNORMAL, wxNORMAL, false, wxT("Times New Roman"), wxFONTENCODING_CP1251);
+	m_textbox->SetFont(font);
 
-	bSizer1->Add( m_panel1, 1, wxEXPAND | wxALL, 5 );
+	bSizer1->Add(m_panel1, 1, wxEXPAND | wxALL, 5);
 
-  
+
 #if wxUSE_MENUS
-    // create a menu bar
-    wxMenu *fileMenu = new wxMenu;
+	// create a menu bar
+	wxMenu *fileMenu = new wxMenu;
 
-    // the "About" item should be in the help menu
-    wxMenu *helpMenu = new wxMenu;
+	// the "About" item should be in the help menu
+	wxMenu *helpMenu = new wxMenu;
 	helpMenu->Append(ASRApp_Help, _("&Help\tF1"), _("Instructions"));
-    helpMenu->Append(ASRApp_About, _("&About program..."), _("Brief description"));
+	helpMenu->Append(ASRApp_About, _("&About program..."), _("Brief description"));
 
 	fileMenu->Append(ASRApp_OpenFile, _("Process file\tF2"), _("Process file"));
-    fileMenu->Append(ASRApp_Font, _("Font\tAlt-F"), _("Font"));
-//	fileMenu->Append(ASRApp_Listen, _("Restart\tF3"), _("Restart"));
+	fileMenu->Append(ASRApp_Font, _("Font\tAlt-F"), _("Font"));
+	//	fileMenu->Append(ASRApp_Listen, _("Restart\tF3"), _("Restart"));
 	fileMenu->Append(ASRApp_Play, _("Listen\tF6"), _("Listen to last phrase"));
 	fileMenu->Append(ASRApp_Record, _("Record\tF7"), _("Record"));
-//	fileMenu->Append(ASRApp_Decode, _("Add new words\tF8"), _("Add new words"));
+	//	fileMenu->Append(ASRApp_Decode, _("Add new words\tF8"), _("Add new words"));
 	fileMenu->Append(ASRApp_AudioParams, _("Parameters\tF9"), _("Audio parameters"));
-    fileMenu->Append(ASRApp_Clear, _("Clear\tF10"), _("Clear the screen"));
-    fileMenu->Append(ASRApp_Hide, _("H&ide\tAlt-X"), _("Hide the screen"));
-    fileMenu->Append(ASRApp_Shutdown, _("Stop the server\tF12"), _("Stop the server"));
-	fileMenu->Append(ASRApp_SendKeyStroke, _("Output to any active app"), _("Output to any active app"), wxITEM_CHECK );
+	fileMenu->Append(ASRApp_Clear, _("Clear\tF10"), _("Clear the screen"));
+	fileMenu->Append(ASRApp_Hide, _("H&ide\tAlt-X"), _("Hide the screen"));
+	fileMenu->Append(ASRApp_Shutdown, _("Stop the server\tF12"), _("Stop the server"));
+	fileMenu->Append(ASRApp_SendKeyStroke, _("Output to any active app"), _("Output to any active app"), wxITEM_CHECK);
 
-    // now append the freshly created menu to the menu bar...
-    wxMenuBar *menuBar = new wxMenuBar();
-    menuBar->Append(fileMenu, _("&Actions"));
-    menuBar->Append(helpMenu, _("&Help"));
+	// now append the freshly created menu to the menu bar...
+	wxMenuBar *menuBar = new wxMenuBar();
+	menuBar->Append(fileMenu, _("&Actions"));
+	menuBar->Append(helpMenu, _("&Help"));
 
-    // ... and attach this menu bar to the frame
-    SetMenuBar(menuBar);
+	// ... and attach this menu bar to the frame
+	SetMenuBar(menuBar);
 #endif // wxUSE_MENUS
 
 #if wxUSE_STATUSBAR
@@ -89,14 +89,29 @@ MyFrame1::MyFrame1(wxLocale& locale, wxWindow* parent, wxWindowID id, const wxSt
 	bar->Layout();
 #endif // wxUSE_STATUSBAR
 
-	this->SetSizer( bSizer1 );
+	this->SetSizer(bSizer1);
 	this->Layout();
 	this->Center();
-	pConfig = wxConfigBase::Get();
 	log = fopen(".\\Dictomash.log","a");
 	logchain = new wxLogChain(new wxLogStderr(log));
+
+	try {
+		pConfig = wxConfigBase::Get();
+		if (pConfig->Exists(PROGRAM_TITLE)){
+			wxLogFatalError(_("Configuration fatal error, exiting !"));
+		}
+	}
+	catch (const std::exception& e){
+		wxLogFatalError(_("App exception: %s"), (const wxChar*)e.what());
+	}
+	catch (...){
+		wxLogFatalError(_("App crashed !"));
+	}
+
+	// DEBUG
 	LoadParams();
 	InitDecoder();
+//	if (true)		return;
 	InitAudio();
 	doModelUpdate = false;
 
@@ -109,22 +124,27 @@ MyFrame1::MyFrame1(wxLocale& locale, wxWindow* parent, wxWindowID id, const wxSt
 
 MyFrame1::~MyFrame1()
 {
-	if (m_taskBarIcon!=NULL)
-		delete m_taskBarIcon;
-	delete m_cursor;
-	free(launchdir);
 	if (pConfig != NULL){
 		SaveParams();
 		delete pConfig;
 		pConfig = NULL;
 	}
 	SetStatusBar(NULL);
+	if (m_taskBarIcon != NULL)
+		delete m_taskBarIcon;
 	delete bar;
-	m_cursor = NULL;
-	m_taskBarIcon = NULL;
+	delete m_cursor;
 	delete wxLog::SetActiveTarget(NULL);
-	if (log!=NULL)
+	delete launchDir;
+	delete tempDir;
+	m_cursor = NULL;
+	tempDir = NULL;
+	launchDir = NULL;
+	m_taskBarIcon = NULL;
+	if (log != NULL)
 		fclose(log);
+	log = NULL;
+
 }
 
 // event handlers
@@ -242,22 +262,7 @@ void MyFrame1::OnRecord(wxCommandEvent& WXUNUSED(event)){
 
 void MyFrame1::OnPlay(wxCommandEvent& WXUNUSED(event)){
 
-	wxString curAudioFile(_("wav\\lastfile.rw"));
-	audioOut->StopStream();
-	if (wxFile::Exists(curAudioFile)){
-		audioOut->fileName = curAudioFile;//path;
-		audioOut->StartStream(false);
-	}
-	else {
-		WriteText(_(":(("));
-	}
-
-
-	//wxString cmd, path;
-	//char buf[_MAX_PATH];
-	//getcwd(buf, _MAX_PATH);
-	//path = wxString::FromAscii(buf);
-	//Exec( wxString::Format(_("cmd /c %s\\playit.bat"), wxString::FromAscii(launchdir)));
+	playFile(_("wav\\lastfile.rw"));
 }
 
 void writeFile(wxString);
@@ -384,7 +389,13 @@ void MyFrame1::LoadParams(){
 
 	if ( pConfig == NULL )
 		return;
-	NOISE_THRESHOLD = pConfig->Read(NOISE_THRESHOLD_KEY, NOISE_THRESHOLD);
+	try {
+		NOISE_THRESHOLD = pConfig->Read(NOISE_THRESHOLD_KEY, NOISE_THRESHOLD);
+	}
+	catch (const std::exception& e){
+		wxLogFatalError((const wxChar*)e.what());
+
+	}
 	MAX_PAUSE_LENGTH = pConfig->Read(MAX_PAUSE_LENGTH_KEY, MAX_PAUSE_LENGTH);
 	SIGNAL_LEVEL = pConfig->Read(SIGNAL_LEVEL_KEY, SIGNAL_LEVEL);
 	wxString server_port = pConfig->Read(SERVER_KEY, SERVER);
@@ -431,6 +442,7 @@ void MyFrame1::InitAudio(){
 	
 	audioOut = new ReadAudio(this);
 	audioOut->Create();
+	//if (true) return;
 	audioOut->Initialize();
 	audioOut->Run();
 	
@@ -438,22 +450,44 @@ void MyFrame1::InitAudio(){
 
 void MyFrame1::InitDecoder(){
 	
-	char *temp = getenv("TEMP");
-	launchdir = _getcwd(NULL, _MAX_PATH);
+	int err = 0;
+	tempDir = getenv("TEMP");
+	launchDir = _getcwd(NULL, _MAX_PATH);
 
 	SetStatusbarText(_("Wait..."));
 	if (SERVER.Lower()== _T("localhost"))
 		CheckDecoderSrv();
+	err = _chdir(tempDir);
+	if (err==0){
 
-	_chdir(temp);
-	_mkdir("wav");
-	_mkdir("feat");
+		tempDir = _getcwd(NULL, _MAX_PATH);
+		//wxLogMessage(_("CWD: %s"), wxString::FromUTF8(tempDir));
+		if (!wxDir::Exists(_("wav"))){
+			err = _mkdir("wav");
+			if (err != 0){
+				wxLogError(_("Error in _mkdir(wav): %d"), err);
+			}
+		}
+		if (!wxDir::Exists(_("feat"))){
+			err = _mkdir("feat");
+			if (err != 0){
+				wxLogError(_("Error in _mkdir(feat): %d"), err);
+			}
+		}
+
+	}
+	else  {
+		wxLogError(_("Error in _chdir: %d"), err);
+	}
+	
+
 
 	decoder = new DecoderThread(this);
 	decoder->Create();
 	decoder->Initialize();
 	SetStatusbarText(_(""));
 	decoder->Run();
+
 }
 
 void MyFrame1::OnOpenFile(wxCommandEvent& WXUNUSED(event)){
@@ -491,6 +525,19 @@ void MyFrame1::OnOpenFile(wxCommandEvent& WXUNUSED(event)){
     }
 	decoder->Resume();
 } 
+
+void MyFrame1::playFile(wxString fileName){
+
+	wxString curAudioFile(fileName);
+	audioOut->StopStream();
+	if (wxFile::Exists(curAudioFile)){
+		audioOut->fileName = curAudioFile;//path;
+		audioOut->StartStream(false);
+	}
+	else {
+		WriteText(_(":(("));
+	}
+}
 
 void MyFrame1::Hide(){
 
@@ -650,7 +697,7 @@ void MyFrame1::OnShutdown(wxCommandEvent& WXUNUSED(event)){
 
 void MyFrame1::OnHelp(wxCommandEvent& WXUNUSED(event)){
 
-	Exec( wxString::Format(_T("cmd /c \"%s\\help.chm\""), wxString::FromAscii(launchdir)));
+	Exec( wxString::Format(_T("cmd /c \"%s\\help.chm\""), wxString::FromAscii(launchDir)));
 } 
 
 MyStatusBar::MyStatusBar(wxWindow *parent)

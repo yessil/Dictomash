@@ -164,6 +164,8 @@ static arg_t arg[] = {
 #define TEMPFILE _T("temp.txt")
 #define BUFLEN 500
 #define CMD_STOP 2
+WX_DECLARE_STRING_HASH_MAP(wxString, PhraseBookEn);
+WX_DECLARE_STRING_HASH_MAP(wxString, PhraseBookRu);
 
 
 void delay(){
@@ -190,6 +192,37 @@ wxString GetLastLine(){
 		return s;
 	}
 	return _T("");
+
+}
+
+void fillHashMaps(PhraseBookEn& tableEn, PhraseBookRu& tableRu, wxString fileName){
+
+	wxTextFile f;
+	wxString sk, se, sr;
+	bool eof = false;
+
+	if (wxFile::Exists(fileName)){
+		f.Open(fileName);
+		if (f.GetLineCount()>0){
+			f.GetFirstLine();// first line in the file must be bogus line !
+			while (!f.Eof()){
+				if (!f.Eof())
+					se = f.GetNextLine();
+				if (!f.Eof())
+					sk = f.GetNextLine();
+				if (!f.Eof())
+					sr = f.GetNextLine();
+				else
+					break;
+				tableEn[sk] = se;
+				tableRu[sk] = sr;
+			}
+		}
+		else {
+			E_WARN("HashMap is empty !");
+		}
+		f.Close();
+	}
 
 }
 
@@ -349,6 +382,12 @@ process_utt(char *uttfile, int (*func) (void *kb, utt_res_t * ur, int32 sf, int3
 	wxIPV4address addr;
 	wxSocketBase* sock = NULL;
 	wxString s;
+	PhraseBookEn en;
+	PhraseBookRu ru;
+
+	fillHashMaps(en, ru, _("etc/phrasebook.txt"));
+	s = _("ҚҰРМЕТТІ ӘРІПТЕСТЕР");
+	wxString s1 = en[s];
 	addr.Service(port);
 	s = addr.IPAddress();
   // Create the socket
@@ -395,7 +434,8 @@ process_utt(char *uttfile, int (*func) (void *kb, utt_res_t * ur, int32 sf, int3
 			E_INFO("%s: %6.1f sec CPU, %6.1f sec Clk;  TOT: %8.1f sec CPU, %8.1f sec Clk\n\n", uttid, tm.t_cpu, tm.t_elapsed, tm.t_tot_cpu, tm.t_tot_elapsed);
 			ptmr_reset(&tm);
 			E_INFO("Sending results back\n");
-			s = GetLastLine();
+			s = GetLastLine().Trim(true); 
+			s.Append(_("\n Eng: ")).Append(en[s]).Append(_("\n Rus: ")).Append(ru[s]);
 			int l = s.Len()*sizeof(wxChar)+2;
 			sock->WriteMsg(s, l);
 

@@ -112,7 +112,16 @@ void DecoderThread::ProcessQueue(){
 	}
 
 	wxArrayString files;
-	wxDir::GetAllFiles(_T("wav"), &files, _T("*.raw"));
+	
+	try {
+		if (wxDir::Exists(_T("wav"))){
+			wxDir::GetAllFiles(_T("wav"), &files, _T("*.raw"));
+		}
+	}
+	catch (const std::exception& e){
+		wxLogError(_("App exception: %s"), (const wxChar*)e.what());
+
+	}
 	int n = files.Count();
 
 	if (n>0)

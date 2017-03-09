@@ -146,19 +146,34 @@ void ReadAudio::WriteText(const wxString& text, int errNum){
 
 int ReadAudio::Initialize(){
 
-
-    err = Pa_Initialize();
+	try {
+		err = Pa_Initialize();
+	}
+	catch (const std::exception& e){
+		wxLogFatalError(_("No audio device: ")+wxString::FromUTF8(e.what()));
+	}
 	if (err != paNoError){
 		WriteText(_T("Pa_Initialize"), err);
 		return err;
 	}
+	//DEBUG
+	//if (true) return 0;
 	stream = NULL;
-	int numDevices = Pa_GetDeviceCount();
-	if (numDevices < 0)
-	{
-		printf("ERROR: Pa_GetDeviceCount returned 0x%x\n", numDevices);
-		err = numDevices;
-		return err;
+	try {
+		int numDevices = Pa_GetDeviceCount();
+		if (numDevices < 0)
+		{
+			printf("ERROR: Pa_GetDeviceCount returned 0x%x\n", numDevices);
+			err = numDevices;
+			return err;
+		}
+
+	}
+	catch (const std::exception& e){
+		wxLogFatalError(_("No output audio device: ") + wxString::FromUTF8(e.what()));
+	}
+	catch (...){
+		wxLogFatalError(_("No output audio device: "));
 	}
 
 

@@ -46,6 +46,5 @@ private:
 	bool isReady;
 	bool stop;
 	bool restart;
-	//long timeout;
 
 };
