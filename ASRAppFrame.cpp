@@ -16,7 +16,7 @@
 #include <wx/tokenzr.h>
 #include <wx/process.h>
 #include <wx/fontdlg.h>
-
+#include <tlhelp32.h>
 ///////////////////////////////////////////////////////////////////////////
 
 MyFrame1::MyFrame1(wxLocale& locale, wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style) : BaseFrame(locale, parent, id, title, pos, size, style)
@@ -46,7 +46,7 @@ MyFrame1::MyFrame1(wxLocale& locale, wxWindow* parent, wxWindowID id, const wxSt
 	m_panel1->SetSizer(bSizer2);
 	m_panel1->Layout();
 	bSizer2->Fit(m_panel1);
-	wxFont font(20, wxROMAN, wxNORMAL, wxNORMAL, false, wxT("Times New Roman"), wxFONTENCODING_CP1251);
+	wxFont font(15, wxROMAN, wxNORMAL, wxNORMAL, false, wxT("Times New Roman"), wxFONTENCODING_CP1251);
 	m_textbox->SetFont(font);
 
 	bSizer1->Add(m_panel1, 1, wxEXPAND | wxALL, 5);
@@ -345,7 +345,25 @@ void MyFrame1::WriteText(const wxString& text) {
 
 	wxColor color(_("BLACK"));
 	m_textbox->SetForegroundColour(color);
-	m_textbox->WriteText(text); 
+	m_textbox->WriteText(text);
+
+}
+
+void MyFrame1::Test(const wxString& text){
+
+	wxString fileNameEng = text.AfterFirst(':').AfterFirst(' ').Before('\n');
+	//	wxString fileNameRus = text.AfterLast(':').AfterFirst(' ');
+	wxString fileNameRus = fileNameEng + _("_rus");
+	wxString fileName = _("c:\\temp\\") + fileNameEng + _(".wav");
+	if (wxFile::Exists(fileName.c_str())){
+		playFile(fileName);
+		wxThread::Sleep(2000);
+	}
+	fileName = _("c:\\temp\\") + fileNameRus + _(".wav");
+	if (wxFile::Exists(fileName.c_str())){
+		playFile(fileName);
+	}
+
 }
 
 void MyFrame1::AudioParams(){
@@ -439,10 +457,9 @@ void MyFrame1::InitAudio(){
 	audioIO->Create();
 	audioIO->Initialize();
 	audioIO->Run();
-	
+
 	audioOut = new ReadAudio(this);
 	audioOut->Create();
-	//if (true) return;
 	audioOut->Initialize();
 	audioOut->Run();
 	
@@ -492,39 +509,47 @@ void MyFrame1::InitDecoder(){
 
 void MyFrame1::OnOpenFile(wxCommandEvent& WXUNUSED(event)){
 
-    wxString path;
-    wxString filename;
-    wxArrayInt fileTypes;
-
-    wxString filter = wxT("wav files (*.wav)|*.wav|");
-    filter += wxT("All files (*.*)|*.*");
-
-    wxFileDialog dialog(this,
-        _("Choose the audio file"),
-        path,
-        filename,
-        filter,
-        wxFD_OPEN);
 	decoder->Pause();
-
-    if (dialog.ShowModal() == wxID_OK)
+	wxString path = dlgOpenFile();
+    if (!path.empty())
     {
-        wxString path = dialog.GetPath();
-        if (!path.empty())
-        {
-			wxFont font(15, wxROMAN, wxFONTSTYLE_ITALIC, wxNORMAL, false, wxT("Arial"), wxFONTENCODING_CP1251);
-			wxFont curFont = m_textbox->GetFont();
-			m_textbox->BeginFont(font);
-			m_textbox->BeginTextColour(wxColor(_T("Brown")));
-			wxCopyFile(path, _T("wav\\recorded.raw"));
-			WriteText(_("\n") + path + _("\n"));
-			m_textbox->EndTextColour();
-			m_textbox->EndFont();
-
-        }
+		wxFont font(15, wxROMAN, wxFONTSTYLE_ITALIC, wxNORMAL, false, wxT("Arial"), wxFONTENCODING_CP1251);
+		wxFont curFont = m_textbox->GetFont();
+		m_textbox->BeginFont(font);
+		m_textbox->BeginTextColour(wxColor(_T("Brown")));
+		playFile(path);
+		wxThread::Sleep(5000);
+		wxCopyFile(path, _T("wav\\recorded.raw"));
+		WriteText(_("\n") + path + _("\n"));
+		m_textbox->EndTextColour();
+		m_textbox->EndFont();
     }
 	decoder->Resume();
 } 
+
+wxString MyFrame1::dlgOpenFile(){
+
+	wxString path;
+	wxString filename;
+	wxArrayInt fileTypes;
+
+	wxString filter = wxT("wav files (*.wav)|*.wav|");
+	filter += wxT("All files (*.*)|*.*");
+
+	wxFileDialog dialog(this,
+		_("Choose the audio file"),
+		path,
+		filename,
+		filter,
+		wxFD_OPEN);
+
+	if (dialog.ShowModal() == wxID_OK)
+	{
+		return dialog.GetPath();
+	}
+	return path;
+
+}
 
 void MyFrame1::playFile(wxString fileName){
 
@@ -615,23 +640,50 @@ void MyFrame1::SetValue(int value){
 
 void MyFrame1::CheckDecoderSrv(){
 
-	DWORD p[500];
+	int found = 1; // not found
+	wxString filename;
+	long res;
+
+	PROCESSENTRY32 entry;
+	entry.dwSize = sizeof(PROCESSENTRY32);
+
+	HANDLE snapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, NULL);
+
+	if (Process32First(snapshot, &entry) == TRUE)
+	{
+		while (Process32Next(snapshot, &entry) == TRUE)
+		{
+			if (_wcsicmp(entry.szExeFile, _("Decoder.exe")) == 0)
+			{
+//				HANDLE hProcess = OpenProcess(PROCESS_ALL_ACCESS, FALSE, entry.th32ProcessID);
+
+				// Do stuff..
+
+//				CloseHandle(hProcess);
+				return;
+			}
+		}
+	}
+
+	CloseHandle(snapshot);
+
+	/*
+	DWORD p[1500];
 	//char path[_MAX_PATH];
 	DWORD np =1000; //some guess
 	HANDLE h;
 	WCHAR fname[300];
- 	wxString filename;
-	int found = 1; // not found
-	long res;
 	EnumProcesses(p, np, &np); 
 	for (int i =0; i < np; i++){
 		h = OpenProcess(PROCESS_ALL_ACCESS, FALSE, p[i]);
 		GetProcessImageFileName(h, fname, 100);
 		filename.Printf(_T("%s"), fname);
+		wxLogMessage(_("%s"), filename);
 		found = filename.AfterLast(_T('\\')).Cmp(_T("Decoder.exe"));
 		if (found == 0)
 			return;
 	}
+	*/
 	wxSetWorkingDirectory(_(".\\Decoder"));
 	filename.Printf(_T("%s\\Decoder.exe"), wxGetCwd());
 //		wxLogMessage(filename);
@@ -771,7 +823,8 @@ wxBitmap MyStatusBar::CreateBitmapForButton(bool on)
 void MyStatusBar::UpdateClock()
 {
 	time += incr;
-	SetStatusText(wxString::Format(_("  %d sec."), time), 4);
+	if (incr !=0)
+		SetStatusText(wxString::Format(_("  %d sec."), time), 4);
 
 }
 

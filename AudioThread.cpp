@@ -192,6 +192,13 @@ bool AudioThread::OpenFile(char* filename){
 	return true;
 }
 
+int32 AudioThread::ext_ad_read(ad_rec_t *, int16 *buf, int16 *prbuf, int32 max) {
+
+	memcpy(prbuf, buf, max);
+	return ad_read(in_ad, buf, FRAMES_PER_BUFFER);
+
+}
+
 void AudioThread::Record(){
 
 	uint32 num_frames;
@@ -211,7 +218,7 @@ void AudioThread::Record(){
 	if (!in_ad->recording)
 		ad_start_rec(in_ad);
 	
-	num_frames = ad_read(in_ad, frames, FRAMES_PER_BUFFER);
+	num_frames = ext_ad_read(in_ad, frames, frames2, FRAMES_PER_BUFFER);
 	if (debug)
 		frame->SetStatusbarText(wxString::Format(_T("num_frames: %d noiseLevel: %5.3f signalLevel: %5.3f"), num_frames, noiseLevel, signalLevel));
 
@@ -240,6 +247,12 @@ void AudioThread::Record(){
 			pauseLenght = 0;
 		}
 
+		if (!speechDetected){
+			if (fwrite(frames2, sizeof(int16), num_frames, dump) < num_frames) {
+				E_ERROR("Error writing audio to dump file.\n");
+				return;
+			}
+		}
 		speechDetected = true;
 
 		if (fwrite(frames, sizeof(int16), num_frames, dump) < num_frames) {

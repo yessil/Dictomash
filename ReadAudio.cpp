@@ -146,27 +146,54 @@ void ReadAudio::WriteText(const wxString& text, int errNum){
 
 int ReadAudio::Initialize(){
 
-	try {
-		err = Pa_Initialize();
-	}
-	catch (const std::exception& e){
-		wxLogFatalError(_("No audio device: ")+wxString::FromUTF8(e.what()));
-	}
-	if (err != paNoError){
-		WriteText(_T("Pa_Initialize"), err);
-		return err;
-	}
 	//DEBUG
 	//if (true) return 0;
 	stream = NULL;
 	try {
+		err = Pa_Initialize();
+		if (err != paNoError){
+			WriteText(_T("Pa_Initialize"), err);
+			return err;
+		}
+
 		int numDevices = Pa_GetDeviceCount();
 		if (numDevices < 0)
 		{
-			printf("ERROR: Pa_GetDeviceCount returned 0x%x\n", numDevices);
+			wxLogError(_("ERROR: Pa_GetDeviceCount returned 0x%x\n", numDevices));
 			err = numDevices;
 			return err;
 		}
+		outputParameters.device = Pa_GetDefaultOutputDevice(); /* default output device */
+		if (outputParameters.device < 0){
+			wxLogError(_T("Pa_Initialize problem"));
+		}
+		else {
+			outputParameters.channelCount = 1;
+			outputParameters.sampleFormat = PA_SAMPLE_TYPE;
+			outputParameters.suggestedLatency = Pa_GetDeviceInfo(outputParameters.device)->defaultLowOutputLatency;
+			outputParameters.hostApiSpecificStreamInfo = NULL;
+		}
+
+		gAudata.maxFrameIndex = totalFrames = NUM_SECONDS * SAMPLE_RATE; /* Record for a few seconds. */
+		iFillLevel = totalFrames - 1; // blind shot
+		gAudata.frameIndex = 0;
+		numSamples = totalFrames * NUM_CHANNELS;
+		numBytes = numSamples * sizeof(SAMPLE);
+		gAudata.recordedSamples = NULL;
+		fileNum = 0;
+
+		inputParameters.device = Pa_GetDefaultInputDevice(); /* default input device */
+		//WriteText(wxString::Format("\nAudio Initialize: device %d", inputParameters.device));
+		inputParameters.channelCount = 1;
+		inputParameters.sampleFormat = PA_SAMPLE_TYPE;
+		const PaDeviceInfo* dev = Pa_GetDeviceInfo(inputParameters.device);
+		if (dev != NULL)
+			inputParameters.suggestedLatency = dev->defaultLowInputLatency;
+		else
+			return -1;
+		inputParameters.hostApiSpecificStreamInfo = NULL;
+
+		return err;
 
 	}
 	catch (const std::exception& e){
@@ -177,32 +204,7 @@ int ReadAudio::Initialize(){
 	}
 
 
-    outputParameters.device = Pa_GetDefaultOutputDevice(); /* default output device */
-    outputParameters.channelCount = 1;                   
-    outputParameters.sampleFormat =  PA_SAMPLE_TYPE;
-    outputParameters.suggestedLatency = Pa_GetDeviceInfo( outputParameters.device )->defaultLowOutputLatency;
-    outputParameters.hostApiSpecificStreamInfo = NULL;
 
-	gAudata.maxFrameIndex = totalFrames = NUM_SECONDS * SAMPLE_RATE; /* Record for a few seconds. */
-	iFillLevel = totalFrames - 1; // blind shot
-	gAudata.frameIndex = 0;
-    numSamples = totalFrames * NUM_CHANNELS;
-    numBytes = numSamples * sizeof(SAMPLE);
-	gAudata.recordedSamples = NULL;
-	fileNum = 0;
-
-	inputParameters.device = Pa_GetDefaultInputDevice(); /* default input device */
-														 //WriteText(wxString::Format("\nAudio Initialize: device %d", inputParameters.device));
-	inputParameters.channelCount = 1;
-	inputParameters.sampleFormat = PA_SAMPLE_TYPE;
-	const PaDeviceInfo* dev = Pa_GetDeviceInfo(inputParameters.device);
-	if (dev != NULL)
-		inputParameters.suggestedLatency = dev->defaultLowInputLatency;
-	else
-		return -1;
-	inputParameters.hostApiSpecificStreamInfo = NULL;
-
-	return err;
 }
 
 void *ReadAudio::Entry(){

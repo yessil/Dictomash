@@ -76,6 +76,8 @@ private:
 	bool debug = false;
 	int                 timeout;
 	int16 frames[FRAMES_PER_BUFFER];
+	int16 frames1[FRAMES_PER_BUFFER];
+	int16 frames2[FRAMES_PER_BUFFER];
 	BaseFrame*			frame;
 	Converter			cnv;
 	volatile bool		stop;
@@ -92,6 +94,7 @@ private:
 	void Record2();
 	void SaveFile();
 	void SetValue(int value);
+	int32 ext_ad_read(ad_rec_t *, int16 *buf, int16 *prbuf, int32 max);
 	int noiseLevelCounter = 0;// counter for computing noise level in first seconds of recording
 
 };

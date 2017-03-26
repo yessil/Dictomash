@@ -386,8 +386,6 @@ process_utt(char *uttfile, int (*func) (void *kb, utt_res_t * ur, int32 sf, int3
 	PhraseBookRu ru;
 
 	fillHashMaps(en, ru, _("etc/phrasebook.txt"));
-	s = _("ҚҰРМЕТТІ ӘРІПТЕСТЕР");
-	wxString s1 = en[s];
 	addr.Service(port);
 	s = addr.IPAddress();
   // Create the socket

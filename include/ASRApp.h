@@ -39,6 +39,7 @@ public:
     virtual bool OnInit();
 	virtual int OnExit();
     virtual void OnUnhandledException();
+	virtual void OnFatalException();
 protected:
 	wxLocale m_locale; // locale we'll be using
 
@@ -142,16 +143,22 @@ int MyApp::OnExit(){
 
 void MyApp::OnUnhandledException()
 {
-    try
-    {
-        throw;
-    }
-    catch ( ... )
-    {
-		throw;
-    }
-}
+  
+		wxMessageBox(_T("Пенальти !!"),
+			_T("Красная карточка"), wxOK | wxICON_ERROR);
+		if (::wxFileExists(_("semafor")))
+			::wxRemoveFile(_("semafor"));
+		exit(-1);
+  }
 
+void MyApp::OnFatalException()
+{
+	wxMessageBox(_T("Пенальти !!"),
+		_T("Красная карточка"), wxOK | wxICON_ERROR);
+	if (::wxFileExists(_("semafor")))
+		::wxRemoveFile(_("semafor"));
+	exit(-1);
+}
 
 //extern MyApp & wxGetApp();
 DECLARE_APP(MyApp)
