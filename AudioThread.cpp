@@ -219,8 +219,6 @@ void AudioThread::Record(){
 		ad_start_rec(in_ad);
 	
 	num_frames = ext_ad_read(in_ad, frames, frames2, FRAMES_PER_BUFFER);
-	if (debug)
-		frame->SetStatusbarText(wxString::Format(_T("num_frames: %d noiseLevel: %5.3f signalLevel: %5.3f"), num_frames, noiseLevel, signalLevel));
 
 	if (num_frames > 0) {
 
@@ -235,8 +233,8 @@ void AudioThread::Record(){
 		}
 
 		noiseLevel = double(nzc * 1.0) / double((zc *1.0));
-		if (debug)
-			frame->SetStatusbarText(wxString::Format(_T("num_frames: %d noiseLevel: %5.3f signalLevel: %5.3f"), num_frames, noiseLevel, signalLevel));
+	
+
 		if (noiseLevel < signalLevel){
 			if (!speechDetected)
 				return;
@@ -246,6 +244,8 @@ void AudioThread::Record(){
 		else {
 			pauseLenght = 0;
 		}
+		if (debug && num_frames >0)
+			frame->SetStatusbarText(wxString::Format(_T("num_frames: %d noiseLevel: %5.3f signalLevel: %5.3f"), num_frames, noiseLevel, signalLevel));
 
 		if (!speechDetected){
 			if (fwrite(frames2, sizeof(int16), num_frames, dump) < num_frames) {
@@ -265,9 +265,7 @@ void AudioThread::Record(){
 			m =0;
 		}
 
-		if (debug)
-			frame->SetStatusbarText(wxString::Format(_T("num_frames: %d noiseLevel: %5.3f signalLevel: %5.3f"), num_frames, noiseLevel, signalLevel));
-
+	
 		if (pauseLenght > maxPauseLength){ //close  current dump file and open the new one
 
 			fclose(dump);
