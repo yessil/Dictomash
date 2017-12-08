@@ -76,6 +76,7 @@ Global
 		Universal Unicode Release|Mixed Platforms = Universal Unicode Release|Mixed Platforms
 		Universal Unicode Release|Win32 = Universal Unicode Release|Win32
 		Universal Unicode Release|x64 = Universal Unicode Release|x64
+		Description = Dictomash
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{F081000D-3800-4AAB-880B-F7A823C7B528}.Debug|Any CPU.ActiveCfg = Debug|Win32
