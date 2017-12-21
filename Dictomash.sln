@@ -140,12 +140,14 @@ Global
 		{F081000D-3800-4AAB-880B-F7A823C7B528}.Release|Win32.Build.0 = Release|Win32
 		{F081000D-3800-4AAB-880B-F7A823C7B528}.Release|x64.ActiveCfg = Release|Win32
 		{F081000D-3800-4AAB-880B-F7A823C7B528}.Unicode Debug|Any CPU.ActiveCfg = Debug|Win32
+		{F081000D-3800-4AAB-880B-F7A823C7B528}.Unicode Debug|Any CPU.Build.0 = Debug|Win32
 		{F081000D-3800-4AAB-880B-F7A823C7B528}.Unicode Debug|Mixed Platforms.ActiveCfg = Debug|Win32
 		{F081000D-3800-4AAB-880B-F7A823C7B528}.Unicode Debug|Mixed Platforms.Build.0 = Debug|Win32
 		{F081000D-3800-4AAB-880B-F7A823C7B528}.Unicode Debug|Win32.ActiveCfg = Debug|Win32
 		{F081000D-3800-4AAB-880B-F7A823C7B528}.Unicode Debug|Win32.Build.0 = Debug|Win32
 		{F081000D-3800-4AAB-880B-F7A823C7B528}.Unicode Debug|x64.ActiveCfg = Debug|Win32
 		{F081000D-3800-4AAB-880B-F7A823C7B528}.Unicode Release|Any CPU.ActiveCfg = Release|Win32
+		{F081000D-3800-4AAB-880B-F7A823C7B528}.Unicode Release|Any CPU.Build.0 = Release|Win32
 		{F081000D-3800-4AAB-880B-F7A823C7B528}.Unicode Release|Mixed Platforms.ActiveCfg = Release|Win32
 		{F081000D-3800-4AAB-880B-F7A823C7B528}.Unicode Release|Mixed Platforms.Build.0 = Release|Win32
 		{F081000D-3800-4AAB-880B-F7A823C7B528}.Unicode Release|Win32.ActiveCfg = Release|Win32
@@ -251,8 +253,8 @@ Global
 		{C7F41C32-C06E-4D53-8DA4-CFAFE9209584}.Release|Win32.ActiveCfg = Release|Win32
 		{C7F41C32-C06E-4D53-8DA4-CFAFE9209584}.Release|Win32.Build.0 = Release|Win32
 		{C7F41C32-C06E-4D53-8DA4-CFAFE9209584}.Release|x64.ActiveCfg = Release|Win32
-		{C7F41C32-C06E-4D53-8DA4-CFAFE9209584}.Unicode Debug|Any CPU.ActiveCfg = Release|Win32
-		{C7F41C32-C06E-4D53-8DA4-CFAFE9209584}.Unicode Debug|Any CPU.Build.0 = Release|Win32
+		{C7F41C32-C06E-4D53-8DA4-CFAFE9209584}.Unicode Debug|Any CPU.ActiveCfg = Debug|Win32
+		{C7F41C32-C06E-4D53-8DA4-CFAFE9209584}.Unicode Debug|Any CPU.Build.0 = Debug|Win32
 		{C7F41C32-C06E-4D53-8DA4-CFAFE9209584}.Unicode Debug|Mixed Platforms.ActiveCfg = Debug|Win32
 		{C7F41C32-C06E-4D53-8DA4-CFAFE9209584}.Unicode Debug|Mixed Platforms.Build.0 = Debug|Win32
 		{C7F41C32-C06E-4D53-8DA4-CFAFE9209584}.Unicode Debug|Win32.ActiveCfg = Debug|Win32

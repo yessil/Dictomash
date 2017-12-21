@@ -298,3 +298,16 @@ msgstr ""
 #: Decoder.cpp:304
 msgid "Failed to send the file\n"
 msgstr "Ошибка отправки файла\n"
+
+## server side messages
+msgid "Server error"
+msgstr "Ошибка сервера"
+
+msgid "System messages"
+msgstr "Сообщения системы"
+
+msgid "Service completed"
+msgstr "Работа завершена"
+
+msgid "Fatal error"
+msgstr "Фатальная ошибка"

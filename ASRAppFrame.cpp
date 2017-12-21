@@ -31,7 +31,7 @@ MyFrame1::MyFrame1(wxLocale& locale, wxWindow* parent, wxWindowID id, const wxSt
 	NOISE_THRESHOLD = 700;
 	MAX_PAUSE_LENGTH = 10;
 	SIGNAL_LEVEL = 2000;
-	SERVER = _T("alphabet.kz");
+	SERVER = _T("localhost");
 	PORT = 3000;
 	debug = false;
 	this->SetSizeHints(wxDefaultSize, wxDefaultSize);
@@ -92,7 +92,35 @@ MyFrame1::MyFrame1(wxLocale& locale, wxWindow* parent, wxWindowID id, const wxSt
 	this->SetSizer(bSizer1);
 	this->Layout();
 	this->Center();
-	log = fopen(".\\Dictomash.log","a");
+
+	bool ok = false;
+	wxString workDir;
+	launchDir= wxGetCwd();
+
+	wxGetEnv(_("PROGRAMDATA"), &workDir);
+	workDir.Append(_("\\")).Append(_(APPNAME));
+	if (!wxDir::Exists(workDir)) {
+		wxMkdir(workDir);
+	}
+
+	ok = wxSetWorkingDirectory(workDir);
+	if (ok) {
+
+		workDir = wxGetCwd();
+		if (!wxDir::Exists(_("wav"))) {
+			wxMkdir(_("wav"));
+		}
+		if (!wxDir::Exists(_("feat"))) {
+			wxMkdir(_("feat"));
+		}
+
+	}
+	else {
+		wxLogError(_("Error in set working dir: %s"), workDir);
+	}
+
+
+	log =  fopen(".\\App.log","a");
 	logchain = new wxLogChain(new wxLogStderr(log));
 
 	try {
@@ -135,11 +163,7 @@ MyFrame1::~MyFrame1()
 	delete bar;
 	delete m_cursor;
 	delete wxLog::SetActiveTarget(NULL);
-	delete launchDir;
-	delete tempDir;
 	m_cursor = NULL;
-	tempDir = NULL;
-	launchDir = NULL;
 	m_taskBarIcon = NULL;
 	if (log != NULL)
 		fclose(log);
@@ -467,38 +491,11 @@ void MyFrame1::InitAudio(){
 
 void MyFrame1::InitDecoder(){
 	
-	int err = 0;
-	tempDir = getenv("TEMP");
-	launchDir = _getcwd(NULL, _MAX_PATH);
 
 	SetStatusbarText(_("Wait..."));
 	if (SERVER.Lower()== _T("localhost"))
 		CheckDecoderSrv();
-	err = _chdir(tempDir);
-	if (err==0){
-
-		tempDir = _getcwd(NULL, _MAX_PATH);
-		//wxLogMessage(_("CWD: %s"), wxString::FromUTF8(tempDir));
-		if (!wxDir::Exists(_("wav"))){
-			err = _mkdir("wav");
-			if (err != 0){
-				wxLogError(_("Error in _mkdir(wav): %d"), err);
-			}
-		}
-		if (!wxDir::Exists(_("feat"))){
-			err = _mkdir("feat");
-			if (err != 0){
-				wxLogError(_("Error in _mkdir(feat): %d"), err);
-			}
-		}
-
-	}
-	else  {
-		wxLogError(_("Error in _chdir: %d"), err);
-	}
 	
-
-
 	decoder = new DecoderThread(this);
 	decoder->Create();
 	decoder->Initialize();
@@ -518,7 +515,9 @@ void MyFrame1::OnOpenFile(wxCommandEvent& WXUNUSED(event)){
 		m_textbox->BeginFont(font);
 		m_textbox->BeginTextColour(wxColor(_T("Brown")));
 		playFile(path);
-		wxThread::Sleep(5000);
+		wxThread::Sleep(1000);
+		char *tmp = _getcwd(NULL, _MAX_PATH);
+
 		wxCopyFile(path, _T("wav\\recorded.raw"));
 		WriteText(_("\n") + path + _("\n"));
 		m_textbox->EndTextColour();
@@ -684,8 +683,7 @@ void MyFrame1::CheckDecoderSrv(){
 			return;
 	}
 	*/
-	wxSetWorkingDirectory(_(".\\Decoder"));
-	filename.Printf(_T("%s\\Decoder.exe"), wxGetCwd());
+	filename.Printf(_T("%s\\Decoder.exe"), launchDir);
 //		wxLogMessage(filename);
 	if ( !wxFileExists(filename) || (res=wxExecute(filename))==0)
 		wxLogError(_("Failed to launch the server !"));
@@ -749,7 +747,9 @@ void MyFrame1::OnShutdown(wxCommandEvent& WXUNUSED(event)){
 
 void MyFrame1::OnHelp(wxCommandEvent& WXUNUSED(event)){
 
+	char* launchDir = _getcwd(NULL, _MAX_PATH);
 	Exec( wxString::Format(_T("cmd /c \"%s\\help.chm\""), wxString::FromAscii(launchDir)));
+	free(launchDir);
 } 
 
 MyStatusBar::MyStatusBar(wxWindow *parent)

@@ -118,7 +118,7 @@ bool MyApp::OnInit()
 
 	wxLocale::AddCatalogLookupPathPrefix(wxT("./lang"));
 	bool check = m_locale.Init(wxLANGUAGE_KAZAKH, wxLOCALE_CONV_ENCODING);
-	check = m_locale.AddCatalog(wxT("Dictomash"));
+	check = m_locale.AddCatalog(wxT(APPNAME));
 
     // create the main application window
 	MyFrame1 *frame = new MyFrame1(m_locale, NULL, -1, PROGRAM_TITLE, wxDefaultPosition, wxSize(500, 300), wxDEFAULT_FRAME_STYLE | wxTAB_TRAVERSAL);

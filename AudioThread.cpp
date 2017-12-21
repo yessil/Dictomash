@@ -140,7 +140,13 @@ void AudioThread::StopStream()
 void AudioThread::ResetFiles(){
 
 	wxArrayString *files = new wxArrayString();
-	wxDir::GetAllFiles(_T("."), files, _T("*.*"));
+	try {
+		wxDir::GetAllFiles(_T("."), files, _T("*.wav"));
+	}
+	catch (const std::exception& e) {
+		wxLogError(_("App exception: %s"), (const wxChar*)e.what());
+
+	}
 	int n = (*files).Count();
 	if (dump !=NULL)
 		fclose(dump);
