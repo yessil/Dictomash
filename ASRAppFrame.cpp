@@ -94,7 +94,6 @@ MyFrame1::MyFrame1(wxLocale& locale, wxWindow* parent, wxWindowID id, const wxSt
 	this->Center();
 
 	bool ok = false;
-	wxString workDir;
 	launchDir= wxGetCwd();
 
 	wxGetEnv(_("PROGRAMDATA"), &workDir);
@@ -640,7 +639,7 @@ void MyFrame1::SetValue(int value){
 void MyFrame1::CheckDecoderSrv(){
 
 	int found = 1; // not found
-	wxString filename;
+	wxString decoder=_T("Decoder.exe");
 	long res;
 
 	PROCESSENTRY32 entry;
@@ -683,10 +682,12 @@ void MyFrame1::CheckDecoderSrv(){
 			return;
 	}
 	*/
-	filename.Printf(_T("%s\\Decoder.exe"), launchDir);
+	//filename.Printf(_T("%s\\Decoder.exe"), launchDir);
+	wxSetWorkingDirectory(launchDir);
 //		wxLogMessage(filename);
-	if ( !wxFileExists(filename) || (res=wxExecute(filename))==0)
+	if ( !wxFileExists(decoder) || (res=wxExecute(decoder))==0)
 		wxLogError(_("Failed to launch the server !"));
+	wxSetWorkingDirectory(workDir);
 
 }
 

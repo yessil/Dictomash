@@ -288,12 +288,8 @@ msgid "Receiving length: %d \n"
 msgstr "Принятая длина: %d \n"
 
 #: Decoder.cpp:297
-msgid ""
-"\n"
-"Sending file"
-msgstr ""
-"\n"
-"Отправка файла"
+msgid "\nSending file"
+msgstr "\nОтправка файла"
 
 #: Decoder.cpp:304
 msgid "Failed to send the file\n"
